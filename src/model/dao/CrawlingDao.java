@@ -1,7 +1,6 @@
 package model.dao;
 
 import model.dto.ArticleDto;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -42,7 +41,7 @@ public class CrawlingDao {
     }
 
     /* 크롤링 실행 로그 저장 */
-    public void insertCrawlingLog(CrawlingLogDto dto) {
+    public void insertCrawlingLog(CrawlingDto dto) {
 
         String sql = """
             INSERT INTO crawling_log
