@@ -2,57 +2,58 @@ drop database if exists crawlerDB;
 create database crawlerDB;
 use crawlerDB;
 create table industry(
-    industry_id int not null auto_increment,
-    constraint primary key (industry_id),
-    industry_name varchar(50) not null
+    industryId int not null auto_increment,
+    constraint primary key (industryId),
+    industryName varchar(50) not null
 );
 create table company (
-    company_id int not null auto_increment,
-    CONSTRAINT PRIMARY KEY (company_id),
-    company_name VARCHAR(100) not null unique ,
-    head_office varchar(100),
-    founded_year INT ,
-    created_at varchar(20) not null unique,
-    industry_id int not null,
-    constraint foreign key(industry_id) references industry(industry_id) on delete cascade on update cascade
+    companyId int not null auto_increment,
+    CONSTRAINT PRIMARY KEY (companyId),
+    companyName VARCHAR(100) not null unique ,
+    headOffice varchar(100),
+    foundedYear INT ,
+    createdAt varchar(20) not null unique,
+    industryId int not null,
+    constraint foreign key(industryId) references industry(industryId) on delete cascade on update cascade
 );
-create table security_incident(
-    incident_id int not null auto_increment,
-    constraint primary key (incident_id) ,
-    incident_year char(4) , 
-    incident_date date,
-    incident_type VARCHAR(50),
-    incident_description text,
-    action_taken text,
-    approval_status varchar(10),
-    approval_time datetime,
-    company_id int not null ,
-    constraint foreign key(company_id) references company(company_id)  on delete cascade on update cascade
+create table securityIncident(
+    incidentId int not null auto_increment,
+    constraint primary key (incidentId) ,
+    incidentYear char(4) , 
+    incidentDate date,
+    incidentType VARCHAR(50),
+    incidentDescription text,
+    actionTaken text,
+    approvalStatus varchar(10),
+    approvalTime datetime,
+    companyId int not null ,
+    constraint foreign key(companyId) references company(companyId)  on delete cascade on update cascade
 );
-create table crawling_log(
-    crawl_id int AUTO_INCREMENT,
-    constraint primary key (crawl_id),
-    crawl_time DATETIME NOT NULL,
-    crawling_status VARCHAR(20)NOT NULL ,
-    collected_count INT NOT NULL,
+create table crawlingLog(
+    crawlId int AUTO_INCREMENT,
+    constraint primary key (crawlId),
+    crawlTime DATETIME NOT NULL,
+    crawlingStatus VARCHAR(20)NOT NULL ,
+    collectedCount INT NOT NULL,
     message VARCHAR(255)
 );
 create table article(
-    article_id int not null auto_increment ,
-    constraint primary key (article_id),
-    company_id int not null ,
-    constraint foreign key(company_id) references company(company_id)  on delete cascade on update cascade,
+    articleId int not null auto_increment ,
+    constraint primary key (articleId),
+    companyId int not null ,
+    constraint foreign key(companyId) references company(companyId)  on delete cascade on update cascade,
     title varchar(200) ,
     content text ,
-    article_source varchar(100),
-    article_date date,
-    created_at datetime
+    articleSource varchar(100),
+    articleDate date,
+    createdAt datetime
 );
+
 -- [1] industry
-INSERT INTO industry (industry_name)
+INSERT INTO industry (industryName)
 VALUES('IT / 플랫폼'),('제조'),('금융'),('공공기관');
 -- [2] company
-INSERT INTO company(company_name, head_office, founded_year, created_at, industry_id) 
+INSERT INTO company(companyName, headOffice, foundedYear, createdAt, industryId) 
 VALUES
 ('네이버', '서울', 1999, '2020-07-29 01:00:00', 1),
 ('카카오', '서울', 2010, '2020-07-30 13:00:00', 1),
@@ -65,8 +66,8 @@ VALUES
 ('쿠팡', '서울', 2010, '2020-08-06 13:00:00', 2),
 ('배달의민족', '서울', 2010, '2020-08-07 13:00:00', 2);
 -- [3] Sample
-INSERT INTO security_incident 
-(company_id, incident_year, incident_date, incident_type, incident_description, action_taken, approval_status, approval_time )
+INSERT INTO securityIncident 
+(companyId, incidentYear, incidentDate, incidentType, incidentDescription, actionTaken, approvalStatus, approvalTime )
 VALUES
 (1, '2025', '2025-01-01', '외부 침입 및 해킹', '서버 취약점 공격 감지', 'IP 차단 및 패치 적용', '승인 완료', '2025-01-01 10:00:00' ),
 (2, '2025', '2025-01-02', '랜섬웨어 감염', '직원 PC 파일 암호화', '네트워크 분리 및 복구', '승인 완료', '2025-01-02 11:00:00' ),
@@ -79,7 +80,7 @@ VALUES
 (9, '2024', '2024-12-04', '개인정보 유출', '메일 오발송으로 인한 노출', '해당 메일 회수 요청', NULL, '2024-12-04 18:00:00' ),
 (10, '2024', '2024-12-05', '물리적 보안 사고', '사무실 장비 도난 발생', 'CCTV 관제 강화', NULL, '2024-12-05 19:00:00' );
 -- [4] article
-INSERT INTO article(company_id, title, content, article_source, article_date, created_at) VALUES 
+INSERT INTO article(companyId, title, content, articleSource, articleDate, createdAt) VALUES 
 (1, '네이버, 신종 SQL 인젝션 공격 방어 성공', '최근 발생한 대규모 웹 공격 시도를 보안 관제 시스템이 성공적으로 차단함...', '보안뉴스', '2025-01-10', '2025-02-01 09:00:00'),
 (2, '카카오 일부 서비스 지연, 원인은 랜섬웨어 의심 악성코드', '내부 직원의 부주의로 유입된 악성코드가 일부 파일 서버를 암호화하여...', '데일리시큐', '2025-01-11', '2025-02-02 09:00:05'),
 (3, '삼성전자, 전직원 대상 핵심 기술 유출 방지 교육 실시', '최근 발생한 내부자에 의한 정보 반출 시도 이후 보안 규정을 강화하고...', 'IT타임즈', '2025-01-12', '2025-02-03 09:00:05'),
@@ -91,7 +92,7 @@ INSERT INTO article(company_id, title, content, article_source, article_date, cr
 (9, '쿠팡, 배송 파트너 앱 개인정보 오노출 사과', '시스템 업데이트 과정에서 타인의 배송 정보가 잠시 표시되는 오류가 발생하여...', '뉴시스', '2025-01-18', '2025-02-09 09:00:05'),
 (10, '배달의민족, 도난된 업무용 태블릿 기기 전량 원격 삭제 완료', '분실 신고된 모든 모바일 기기의 내부 데이터를 원격으로 소거하여 유출을 방지함...', '테크M', '2025-01-19', '2025-02-10 09:00:05');
 -- [5] crawling
-INSERT INTO crawling_log( crawl_time, crawling_status, collected_count, message) VALUES 
+INSERT INTO crawlingLog( crawlTime, crawlingStatus, collectedCount, message) VALUES 
 ( '2026-02-01 09:00:00', 'SUCCESS', 128, '정상 수집 완료'),
 ( '2026-02-02 09:00:05', 'PARTIAL', 36, '일부 기사 로딩 실패'),
 ( '2026-02-03 09:00:05', 'FAIL', 0, '사이트 구조 변경 감지'),
@@ -105,6 +106,6 @@ INSERT INTO crawling_log( crawl_time, crawling_status, collected_count, message)
 
 select*from industry;
 select*from company;
-select*from security_incident;
+select*from securityIncident;
 select*from article;
-select*from crawling_log;
+select*from crawlingIog;
