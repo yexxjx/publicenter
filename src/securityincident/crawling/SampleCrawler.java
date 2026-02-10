@@ -72,19 +72,19 @@ public class SampleCrawler { //샘플 크롤러 클래스
                                     "크롤링 중 오류 발생"
                             )
                     );
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {} //로그 저장 실패는 무시
             }
 
-            e.printStackTrace();
+            e.printStackTrace(); //콘솔에 오류 내용 출력 (디버깅용)
 
-        } finally {
+        } finally { //성공/실패와 상관없이 무조건 실행되는 영역
 
-            if (driver != null) {
+            if (driver != null) { //크롬 브라우저 종료 안 하면 크롬 계속 쌓임
                 driver.quit();
             }
 
-            if (conn != null) {
-                try {
+            if (conn != null) { //DB 연결이 존재하면
+                try { //DB 연결 종료 자원 누수 방지
                     conn.close();
                 } catch (Exception ignored) {}
             }
