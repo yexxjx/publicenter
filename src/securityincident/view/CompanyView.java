@@ -15,7 +15,7 @@ public class CompanyView {
     private CompanyController cc =CompanyController.getInstance();
 
     MainView mv = MainView.getInstance();
-    public Scanner scan=new Scanner(System.in);
+    public Scanner scan = new Scanner(System.in);
     public void index() {
         for ( ; ; ) {
             try {
@@ -23,7 +23,7 @@ public class CompanyView {
                 System.out.println("1.기업 목록 조회ㅣ2.기업 등록|3.기업 수정ㅣ4.기업 삭제ㅣ5.관리자 메뉴로 돌아가기");
                 System.out.println("선택 > ");
                 int ch = scan.nextInt();
-                if (ch == 1) {}
+                if (ch == 1) {companyFindAll();}
                 else if (ch == 2) {companyAdd();}
                 else if (ch == 3) {companyUpdate();}
                 else if (ch == 4) {}

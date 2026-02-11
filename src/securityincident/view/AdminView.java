@@ -25,6 +25,7 @@ public class AdminView {
                 boolean result = ac.adminLogin(pw);
                 if(result){
                     System.out.println("********\n\n[ 로그인 성공 ]\n관리자 권한으로 접속합니다.");
+                    adminMenu();
                 }else{
                     System.out.println("********\n\n[ 로그인 실패 ]\n비밀번호가 올바르지 않습니다.\n다시 시도해주세요.");
                 }
