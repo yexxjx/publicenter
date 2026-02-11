@@ -33,7 +33,7 @@ public class CompanyView {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("[경고] 잘못된 입력 방식입니다. [재입력]");
-                scan = new Scanner(System.in);
+                scan.nextLine();
             } catch (Exception e) {
                 System.out.println("[시스템오류] 원인: " + e);
             }

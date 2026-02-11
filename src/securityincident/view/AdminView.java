@@ -20,7 +20,6 @@ public class AdminView {
     public void adminLogin(){
         for(;;){
             try {
-                scan.nextLine();
                 System.out.println("▶ 메뉴 선택 : 5\n──┤ 관리자 로그인 ├─────────────────────────────────────────\n[ 관리자 로그인 ]");
                 System.out.print("관리자 비밀번호 입력 > ");   String pw = scan.nextLine();
                 boolean result = ac.adminLogin(pw);
@@ -68,4 +67,3 @@ public class AdminView {
     }
 
 }
-

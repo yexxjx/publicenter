@@ -92,7 +92,7 @@ public class CompanyDao {
     // 기업 삭제
     public boolean companyDelete(int cno){
         try{
-            String sql = "delete from board where cno=?";
+            String sql = "delete from company where companyId = ?";
             PreparedStatement ps=conn.prepareStatement(sql);
             ps.setInt(1,cno);
             int count=ps.executeUpdate();
