@@ -12,6 +12,7 @@ public class AdminView {
 
     private AdminController ac = AdminController.getInstance();
     private CompanyView cv = CompanyView.getInstance();
+    private MainView mv = MainView.getInstance();
 
     Scanner scan = new Scanner(System.in);
 
@@ -53,7 +54,7 @@ public class AdminView {
                 else if (ch == 2) {}
                 else if (ch == 3) {}
                 else if (ch == 4) {}
-                else if (ch == 5) {ac.adminLogout();}
+                else if (ch == 5) {ac.adminLogout(); mv.index();}
                 else {
                     System.out.println("[경고] 없는 기능 번호입니다.");
                 }

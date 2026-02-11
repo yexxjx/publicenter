@@ -7,15 +7,26 @@ public class CompanyDto {
     int foundedYear;
     String createdAt;
     int industryId;
+    String industryIdName;
 
     public CompanyDto(){}
-    public CompanyDto(int companyId, String companyName, String headOffice, int foundedYear, String createdAt, int industryId) {
+
+    public CompanyDto(int industryId, String createdAt, int foundedYear, String headOffice, String companyName, int companyId) {
+        this.industryId = industryId;
+        this.createdAt = createdAt;
+        this.foundedYear = foundedYear;
+        this.headOffice = headOffice;
+        this.companyName = companyName;
+        this.companyId = companyId;
+    }
+    public CompanyDto(int companyId, String companyName, String headOffice, int foundedYear, String createdAt, String industryIdName) {
         this.companyId = companyId;
         this.companyName = companyName;
         this.headOffice = headOffice;
         this.foundedYear = foundedYear;
         this.createdAt = createdAt;
         this.industryId = industryId;
+        this.industryIdName = industryIdName;
     }
 
     public int getCompanyId() {

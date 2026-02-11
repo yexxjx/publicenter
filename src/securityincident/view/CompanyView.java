@@ -13,21 +13,21 @@ public class CompanyView {
     public static CompanyView getInstance(){return instance;}
 
     private CompanyController cc =CompanyController.getInstance();
+    private AdminView av = AdminView.getInstance();
 
-    MainView mv = MainView.getInstance();
     public Scanner scan = new Scanner(System.in);
     public void index() {
         for ( ; ; ) {
             try {
                 System.out.println("──┤ 기업 정보 관리 ├──────────────────────────────────────");
                 System.out.println("1.기업 목록 조회ㅣ2.기업 등록|3.기업 수정ㅣ4.기업 삭제ㅣ5.관리자 메뉴로 돌아가기");
-                System.out.println("선택 > ");
+                System.out.print("선택 > ");
                 int ch = scan.nextInt();
                 if (ch == 1) {companyFindAll();}
                 else if (ch == 2) {companyAdd();}
                 else if (ch == 3) {companyUpdate();}
                 else if (ch == 4) {companyDelete();}
-                else if (ch == 5 ){}
+                else if (ch == 5 ){av.adminMenu();}
                 else {
                     System.out.println("[경고] 없는 기능 번호입니다.");
                 }
@@ -49,14 +49,14 @@ public class CompanyView {
                 System.out.println("기업ID | 기업명 | 산업군 | 본사 위치");
                 System.out.println("------------------------------------");
                 for(CompanyDto list : companyDtos){
-                    System.out.printf("  %d  |  %s  |  %s  |  %s  ",
+                    System.out.printf("  %d  |  %s  |  %s  |  %s  \n",
                             list.getCompanyId(), list.getCompanyName(), list.getIndustryId(), list.getHeadOffice());                }
                 System.out.println("======================== 다음 동작 선택 ========================\n");
                 System.out.println("1. 기업 상세 정보 조회");
                 System.out.println("2. 이전 메뉴로 돌아가기");
                 System.out.print("선택> ");                int ch = scan.nextInt();
                 if (ch == 1) { }
-                else if (ch == 2) { mv.index();}
+                else if (ch == 2) { index();}
                 else {
                     System.out.println("[경고] 없는 기능 번호입니다.");
                 }
@@ -71,7 +71,6 @@ public class CompanyView {
 
     public void companyAdd() {
         scan.nextLine();
-
         System.out.print("기업명: "); String companyName = scan.nextLine();
         System.out.print("본사위치: "); String headOffice = scan.nextLine();
         System.out.print("설립연도: "); int foundedYear = scan.nextInt();

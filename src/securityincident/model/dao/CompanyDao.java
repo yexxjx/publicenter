@@ -31,7 +31,7 @@ public class CompanyDao {
     public ArrayList<CompanyDto> companyFindAll(){
         ArrayList<CompanyDto> companyDtos = new ArrayList<>();
         try{
-            String sql = "SELECT c.*, i.industryIdName " +
+            String sql = "SELECT c.*, i.industryName " +
                     "FROM company c " +
                     "JOIN industry i ON c.industryId = i.industryId";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -42,8 +42,8 @@ public class CompanyDao {
                 String headOffice = rs.getString("headOffice");
                 int foundedYear = rs.getInt("foundedYear");
                 String createdAt = rs.getString("createdAt");
-                int industryId  = rs.getInt("industryId");
-                CompanyDto companyDto = new CompanyDto(companyId,companyName,headOffice,foundedYear,createdAt,industryId);
+                String industryName = rs.getString("industryName");
+                CompanyDto companyDto = new CompanyDto(companyId, companyName, headOffice, foundedYear, createdAt, industryName);
                 companyDtos.add(companyDto);
             }
         } catch (SQLException e) {

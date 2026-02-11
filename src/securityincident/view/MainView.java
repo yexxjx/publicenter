@@ -20,6 +20,7 @@ public class MainView {
                 System.out.println("──┤ \uD83C\uDF1F\uD83D\uDD10 publiccenter Console \uD83D\uDD10\uD83C\uDF1F ├───────────────────────────────────");
                 System.out.println("1. 기업 정보 조회\n2. 보안 사고 조회\n3. 사고 검색/필터\n4. 통계 보기\n\n5. 관리자 로그인\n\n6. 프로그램 종료\n");
                 System.out.print("> 선택 : ");                int ch = scan.nextInt();
+                scan.nextLine();
                 if (ch == 1) { cv.companyFindAll();}
                 else if (ch == 2) { }
                 else if (ch == 3) { }
@@ -31,7 +32,7 @@ public class MainView {
                 }
             }catch (InputMismatchException e){
                 System.out.println("[경고] 잘못된 입력 방식입니다. [재입력]");
-                scan = new Scanner(System.in); // 입력 객체 초기화 (잘못된 입력값 제거)
+                scan.nextLine(); // 입력 객체 초기화 (잘못된 입력값 제거)
             }catch (Exception e){ // Exception은 예외 중 슈퍼클래스로 모든 예외 처리가 가능하다.
                 System.out.println("[시스템오류] 관리자에게 문의하세요.");
             }
