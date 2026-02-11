@@ -8,6 +8,8 @@ public class MainView {
     private static final MainView instance = new MainView();
     public static MainView getInstance(){return instance;}
 
+    CompanyView cv = CompanyView.getInstance();
+
     Scanner scan = new Scanner(System.in);
 
     // 0. [공통] 메인 진입 화면
@@ -17,7 +19,7 @@ public class MainView {
                 System.out.println("──┤ \uD83C\uDF1F\uD83D\uDD10 publiccenter Console \uD83D\uDD10\uD83C\uDF1F ├───────────────────────────────────");
                 System.out.println("1. 기업 정보 조회\n2. 보안 사고 조회\n3. 사고 검색/필터\n4. 통계 보기\n\n5. 관리자 로그인\n\n6. 프로그램 종료\n");
                 System.out.print("> 선택 : ");                int ch = scan.nextInt();
-                if (ch == 1) { }
+                if (ch == 1) { cv.companyFindAll();}
                 else if (ch == 2) { }
                 else if (ch == 3) { }
                 else if (ch == 4) { }
