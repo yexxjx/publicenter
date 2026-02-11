@@ -2,9 +2,7 @@ package securityincident.model.dao;
 
 import securityincident.model.dto.CompanyDto;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class CompanyDao {
@@ -25,7 +23,6 @@ public class CompanyDao {
             conn = DriverManager.getConnection(url, user, password);
             System.out.println("[준비] 데이터베이스 연동 성공");
         } catch(Exception e) {
-            // [여기를 고치세요!] e.getMessage()를 찍어야 진짜 이유를 압니다.
             System.out.println("[경고] 연동 실패 원인: " + e.getMessage());
         }
     }
@@ -88,5 +85,19 @@ public class CompanyDao {
         }catch(SQLException e){
             System.out.println("[시스템오류] SQL 문법 문제 발생"+e);}
         return false;
+    }
+
+    // 기업 삭제
+    public boolean companyDelete(int cno){
+        try{
+            String sql = "delete from board where cno=?";
+            PreparedStatement ps=conn.prepareStatement(sql);
+            ps.setInt(1,cno);
+            int count=ps.executeUpdate();
+            if(count==1){return true;}
+            else{return false;}
+        }catch(SQLException e){
+            System.out.println("[시스템오류] SQL 문법 문제 발생"+e);
+        } return false;
     }
 }

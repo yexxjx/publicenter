@@ -26,7 +26,7 @@ public class CompanyView {
                 if (ch == 1) {}
                 else if (ch == 2) {companyAdd();}
                 else if (ch == 3) {companyUpdate();}
-                else if (ch == 4) {}
+                else if (ch == 4) {companyDelete();}
                 else if (ch == 5 ){}
                 else {
                     System.out.println("[경고] 없는 기능 번호입니다.");
@@ -98,5 +98,15 @@ public class CompanyView {
             System.out.println("[안내] 게시물 수정 성공");}
         else{
             System.out.println("[경고] 게시물 수정 실패 또는 없는 게시물 번호 입니다.");}
+    }
+
+    public void companyDelete(){
+        System.out.println("삭제할 게시물 번호");
+        int cno=scan.nextInt();
+        boolean result=cc.companyDelete(cno);
+        if(result){
+            System.out.println("[안내] 게시물 삭제 성공");}
+        else{
+            System.out.println("[경고] 게시물 삭제 실패 또는 없는 게시물 번호 입니다.");}
     }
 }
