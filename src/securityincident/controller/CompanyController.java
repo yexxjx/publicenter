@@ -29,5 +29,12 @@ public class CompanyController {
         return result;
     }
 
+    // 기업 삭제
+    public boolean companyDelete(int cno){
+        boolean result=cd.companyDelete(cno);
+        return result;
+    }
+
+
 }
 
