@@ -1,9 +1,11 @@
 package securityincident.model.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import securityincident.model.dto.CompanyDto;
+
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class CompanyDao {
     private static final CompanyDao instance = new CompanyDao();
@@ -14,12 +16,9 @@ public class CompanyDao {
     private String password = "1234";
     private Connection conn;
 
-    // 2. [수정] 생성자는 하나만 남기고 'private'으로 통일하세요.
-    private CompanyDao() {
-        connect();
-    }
+    private CompanyDao() {connect();}
 
-    // 3. [유지] 실제 연결을 담당하는 메서드
+
     private void connect() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -29,6 +28,29 @@ public class CompanyDao {
             // [여기를 고치세요!] e.getMessage()를 찍어야 진짜 이유를 압니다.
             System.out.println("[경고] 연동 실패 원인: " + e.getMessage());
         }
+    }
+
+    // * 기업 전체 조회
+    public ArrayList<CompanyDto> companyFindAll(){
+        ArrayList<CompanyDto> companyDtos = new ArrayList<>();
+        try{
+            String sql = "SELECT*FROM crawlerDB";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                int companyId = rs.getInt("companyId");
+                String companyName = rs.getString("companyName");
+                String headOffice = rs.getString("headOffice");
+                int foundedYear = rs.getInt("foundedYear");
+                String createdAt = rs.getString("createdAt");
+                int industryId  = rs.getInt("industryId");
+                CompanyDto companyDto = new CompanyDto(companyId,companyName,headOffice,foundedYear,createdAt,industryId);
+                companyDtos.add(companyDto);
+            }
+        } catch (SQLException e) {
+            System.out.println("[시스템오류] SQL 문법 문제 발생: "+e);
+        }
+        return companyDtos;
     }
 
     // 기업 등록

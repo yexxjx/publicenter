@@ -8,6 +8,7 @@ public class CompanyDto {
     String createdAt;
     int industryId;
 
+    public CompanyDto(){}
     public CompanyDto(int companyId, String companyName, String headOffice, int foundedYear, String createdAt, int industryId) {
         this.companyId = companyId;
         this.companyName = companyName;
