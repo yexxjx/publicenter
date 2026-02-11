@@ -12,10 +12,10 @@ public class CompanyView {
     private static final CompanyView instance=new CompanyView();
     public static CompanyView getInstance(){return instance;}
 
-    private CompanyController cc=CompanyController.getInstance();
+    private CompanyController cc =CompanyController.getInstance();
 
     MainView mv = MainView.getInstance();
-    public Scanner scan=new Scanner(System.in);
+    public Scanner scan = new Scanner(System.in);
     public void index() {
         for ( ; ; ) {
             try {
