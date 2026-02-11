@@ -1,3 +1,4 @@
+-- 작업자 이태현,
 drop database if exists crawlerDB;
 create database crawlerDB;
 use crawlerDB;
@@ -20,19 +21,19 @@ create table securityIncident(
     incidentId int not null auto_increment,
     constraint primary key (incidentId) ,
     incidentYear char(4) , 
-    incidentDate date,
+    incidentDate DATE DEFAULT (CURRENT_DATE),
     incidentType VARCHAR(50),
     incidentDescription text,
     actionTaken text,
     approvalStatus varchar(10),
-    approvalTime datetime,
+    approvalTime datetime default now(),
     companyId int not null ,
     constraint foreign key(companyId) references company(companyId)  on delete cascade on update cascade
 );
 create table crawlingLog(
     crawlId int AUTO_INCREMENT,
     constraint primary key (crawlId),
-    crawlTime DATETIME NOT NULL,
+    crawlTime DATETIME NOT NULL default now(),
     crawlingStatus VARCHAR(20)NOT NULL ,
     collectedCount INT NOT NULL,
     message VARCHAR(255)
@@ -45,7 +46,7 @@ create table article(
     title varchar(200) ,
     content text ,
     articleSource varchar(100),
-    articleDate date,
+    articleDate DATE DEFAULT (CURRENT_DATE),
     createdAt datetime
 );
 
