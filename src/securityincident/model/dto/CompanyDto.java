@@ -19,7 +19,7 @@ public class CompanyDto {
         this.companyName = companyName;
         this.companyId = companyId;
     }
-    public CompanyDto(int companyId, String companyName, String headOffice, int foundedYear, String createdAt, String industryIdName) {
+    public CompanyDto(int companyId, String companyName, String headOffice, int foundedYear, String createdAt, int industryId, String industryIdName) {
         this.companyId = companyId;
         this.companyName = companyName;
         this.headOffice = headOffice;
@@ -76,6 +76,10 @@ public class CompanyDto {
     public void setIndustryId(int industryId) {
         this.industryId = industryId;
     }
+
+    public String getIndustryIdName() { return industryIdName; }
+
+    public void setIndustryIdName(String industryIdName) { this.industryIdName = industryIdName; }
 
     @Override
     public String toString() {

@@ -1,5 +1,7 @@
 package securityincident.view;
 // 작업자 이태현,
+import securityincident.controller.CompanyController;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -8,13 +10,15 @@ public class MainView {
     private static final MainView instance = new MainView();
     public static MainView getInstance(){return instance;}
 
-    private CompanyView cv = CompanyView.getInstance();
-    private AdminView av = AdminView.getInstance();
+    private CompanyView cv;
+    private AdminView av;
 
     Scanner scan = new Scanner(System.in);
 
     // 0. [공통] 메인 진입 화면
     public void index(){
+        if(cv == null) cv = CompanyView.getInstance();
+        if(av == null) av = AdminView.getInstance();
         for(;;){
             try {
                 System.out.println("──┤ \uD83C\uDF1F\uD83D\uDD10 publiccenter Console \uD83D\uDD10\uD83C\uDF1F ├───────────────────────────────────");
@@ -33,7 +37,7 @@ public class MainView {
                 }
             }catch (InputMismatchException e){
                 System.out.println("[경고] 잘못된 입력 방식입니다. [재입력]");
-                scan = new Scanner(System.in); // 입력 객체 초기화 (잘못된 입력값 제거)
+                scan.nextLine(); // 입력 객체 초기화 (잘못된 입력값 제거)
             }catch (Exception e){ // Exception은 예외 중 슈퍼클래스로 모든 예외 처리가 가능하다.
                 System.out.println("[시스템오류] 관리자에게 문의하세요.");
             }

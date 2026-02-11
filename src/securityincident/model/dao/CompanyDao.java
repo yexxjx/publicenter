@@ -33,7 +33,8 @@ public class CompanyDao {
         try{
             String sql = "SELECT c.*, i.industryName " +
                     "FROM company c " +
-                    "JOIN industry i ON c.industryId = i.industryId";
+                    "JOIN industry i ON c.industryId = i.industryId " +
+                    "ORDER BY c.companyId ASC";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
@@ -42,8 +43,9 @@ public class CompanyDao {
                 String headOffice = rs.getString("headOffice");
                 int foundedYear = rs.getInt("foundedYear");
                 String createdAt = rs.getString("createdAt");
+                int industryId = rs.getInt("industryId");
                 String industryName = rs.getString("industryName");
-                CompanyDto companyDto = new CompanyDto(companyId, companyName, headOffice, foundedYear, createdAt, industryName);
+                CompanyDto companyDto = new CompanyDto(companyId, companyName, headOffice, foundedYear, createdAt, industryId, industryName);
                 companyDtos.add(companyDto);
             }
         } catch (SQLException e) {

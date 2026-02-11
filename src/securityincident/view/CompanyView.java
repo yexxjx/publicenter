@@ -1,5 +1,6 @@
 package securityincident.view;
 
+import securityincident.controller.AdminController;
 import securityincident.controller.CompanyController;
 import securityincident.model.dto.CompanyDto;
 
@@ -9,11 +10,10 @@ import java.util.Scanner;
 
 public class CompanyView {
     private CompanyView(){}
-    private static final CompanyView instance=new CompanyView();
+    private static final CompanyView instance = new CompanyView();
     public static CompanyView getInstance(){return instance;}
 
-    private CompanyController cc =CompanyController.getInstance();
-    private AdminView av = AdminView.getInstance();
+    private CompanyController cc;
 
     public Scanner scan = new Scanner(System.in);
     public void index() {
@@ -27,7 +27,7 @@ public class CompanyView {
                 else if (ch == 2) {companyAdd();}
                 else if (ch == 3) {companyUpdate();}
                 else if (ch == 4) {companyDelete();}
-                else if (ch == 5 ){av.adminMenu();}
+                else if (ch == 5 ){return;}
                 else {
                     System.out.println("[경고] 없는 기능 번호입니다.");
                 }
@@ -41,22 +41,23 @@ public class CompanyView {
     }
 
     // * 기업 전체 조회
-    public ArrayList<CompanyDto> companyFindAll(){
+    public void companyFindAll(){
+        if(cc == null) cc = CompanyController.getInstance();
         ArrayList<CompanyDto> companyDtos = cc.companyFindAll();
         for(;;){
             try {
                 System.out.println("──┤ 전체 기업 목록 ├───────────────────────────────────────────────\n");
-                System.out.println("기업ID | 기업명 | 산업군 | 본사 위치");
+                System.out.println("기업ID |   기업명   |   산업군   |   본사 위치");
                 System.out.println("------------------------------------");
                 for(CompanyDto list : companyDtos){
                     System.out.printf("  %d  |  %s  |  %s  |  %s  \n",
-                            list.getCompanyId(), list.getCompanyName(), list.getIndustryId(), list.getHeadOffice());                }
-                System.out.println("======================== 다음 동작 선택 ========================\n");
+                            list.getCompanyId(), list.getCompanyName(), list.getIndustryIdName(), list.getHeadOffice());                }
+                System.out.println("======================== 다음 동작 선택 ========================");
                 System.out.println("1. 기업 상세 정보 조회");
                 System.out.println("2. 이전 메뉴로 돌아가기");
                 System.out.print("선택> ");                int ch = scan.nextInt();
                 if (ch == 1) { }
-                else if (ch == 2) { index();}
+                else if (ch == 2) { return;}
                 else {
                     System.out.println("[경고] 없는 기능 번호입니다.");
                 }
@@ -70,6 +71,7 @@ public class CompanyView {
     }
 
     public void companyAdd() {
+        if(cc == null) cc = CompanyController.getInstance();
         scan.nextLine();
         System.out.print("기업명: "); String companyName = scan.nextLine();
         System.out.print("본사위치: "); String headOffice = scan.nextLine();
@@ -85,6 +87,7 @@ public class CompanyView {
     }
 
     public void companyUpdate(){
+        if(cc == null) cc = CompanyController.getInstance();
         System.out.println("수정할 게시물 번호: "); int cno=scan.nextInt();
         System.out.println("기업번호: "); int companyId=scan.nextInt();
         scan.nextLine();
@@ -100,6 +103,7 @@ public class CompanyView {
     }
 
     public void companyDelete(){
+        if(cc == null) cc = CompanyController.getInstance();
         System.out.println("삭제할 게시물 번호");
         int cno=scan.nextInt();
         boolean result=cc.companyDelete(cno);
