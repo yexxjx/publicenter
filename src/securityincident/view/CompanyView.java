@@ -23,7 +23,7 @@ public class CompanyView {
                 System.out.println("1.기업 목록 조회ㅣ2.기업 등록|3.기업 수정ㅣ4.기업 삭제ㅣ5.관리자 메뉴로 돌아가기");
                 System.out.println("선택 > ");
                 int ch = scan.nextInt();
-                if (ch == 1) {}
+                if (ch == 1) {companyFindAll();}
                 else if (ch == 2) {companyAdd();}
                 else if (ch == 3) {companyUpdate();}
                 else if (ch == 4) {companyDelete();}
@@ -33,7 +33,7 @@ public class CompanyView {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("[경고] 잘못된 입력 방식입니다. [재입력]");
-                scan = new Scanner(System.in);
+                scan.nextLine();
             } catch (Exception e) {
                 System.out.println("[시스템오류] 원인: " + e);
             }

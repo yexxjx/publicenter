@@ -11,6 +11,7 @@ public class AdminView {
     public static AdminView getInstance(){return instance;}
 
     private AdminController ac = AdminController.getInstance();
+    private CompanyView cv = CompanyView.getInstance();
 
     Scanner scan = new Scanner(System.in);
 
@@ -18,12 +19,12 @@ public class AdminView {
     public void adminLogin(){
         for(;;){
             try {
-                scan.nextLine();
                 System.out.println("▶ 메뉴 선택 : 5\n──┤ 관리자 로그인 ├─────────────────────────────────────────\n[ 관리자 로그인 ]");
                 System.out.print("관리자 비밀번호 입력 > ");   String pw = scan.nextLine();
                 boolean result = ac.adminLogin(pw);
                 if(result){
                     System.out.println("********\n\n[ 로그인 성공 ]\n관리자 권한으로 접속합니다.");
+                    adminMenu();
                 }else{
                     System.out.println("********\n\n[ 로그인 실패 ]\n비밀번호가 올바르지 않습니다.\n다시 시도해주세요.");
                 }
@@ -47,7 +48,7 @@ public class AdminView {
                 System.out.println("4. 크롤링 상태");
                 System.out.println("5. 로그아웃\n");
                 System.out.print("선택 > ");      int ch = scan.nextInt();
-                if (ch == 1) {}
+                if (ch == 1) {cv.index();}
                 else if (ch == 2) {}
                 else if (ch == 3) {}
                 else if (ch == 4) {}
@@ -65,4 +66,3 @@ public class AdminView {
     }
 
 }
-
