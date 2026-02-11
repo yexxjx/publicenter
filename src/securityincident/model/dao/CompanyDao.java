@@ -1,10 +1,7 @@
 package securityincident.model.dao;
 
 import securityincident.model.dto.CompanyDto;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class CompanyDao {

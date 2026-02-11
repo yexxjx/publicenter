@@ -8,7 +8,8 @@ public class MainView {
     private static final MainView instance = new MainView();
     public static MainView getInstance(){return instance;}
 
-    CompanyView cv = CompanyView.getInstance();
+    private CompanyView cv = CompanyView.getInstance();
+    private AdminView av = AdminView.getInstance();
 
     Scanner scan = new Scanner(System.in);
 
@@ -23,7 +24,7 @@ public class MainView {
                 else if (ch == 2) { }
                 else if (ch == 3) { }
                 else if (ch == 4) { }
-                else if (ch == 5) { }
+                else if (ch == 5) { av.adminLogin();}
                 else if (ch == 6) { }
                 else {
                     System.out.println("[경고] 없는 기능 번호입니다.");

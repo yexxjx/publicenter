@@ -11,6 +11,7 @@ public class AdminView {
     public static AdminView getInstance(){return instance;}
 
     private AdminController ac = AdminController.getInstance();
+    private CompanyView cv = CompanyView.getInstance();
 
     Scanner scan = new Scanner(System.in);
 
@@ -47,7 +48,7 @@ public class AdminView {
                 System.out.println("4. 크롤링 상태");
                 System.out.println("5. 로그아웃\n");
                 System.out.print("선택 > ");      int ch = scan.nextInt();
-                if (ch == 1) {}
+                if (ch == 1) {cv.index();}
                 else if (ch == 2) {}
                 else if (ch == 3) {}
                 else if (ch == 4) {}
