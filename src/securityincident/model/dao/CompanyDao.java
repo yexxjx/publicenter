@@ -31,7 +31,7 @@ public class CompanyDao {
     public ArrayList<CompanyDto> companyFindAll(){
         ArrayList<CompanyDto> companyDtos = new ArrayList<>();
         try{
-            String sql = "SELECT*FROM crawlerDB";
+            String sql = "SELECT*FROM company";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
