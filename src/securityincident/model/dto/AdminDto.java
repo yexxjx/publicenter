@@ -1,5 +1,5 @@
 package securityincident.model.dto;
-
+// 작업자 이태현
 public class AdminDto {
     private String password;
 
