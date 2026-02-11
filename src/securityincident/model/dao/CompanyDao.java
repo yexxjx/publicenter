@@ -1,7 +1,6 @@
 package securityincident.model.dao;
 
 import securityincident.model.dto.CompanyDto;
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -23,6 +22,7 @@ public class CompanyDao {
             conn = DriverManager.getConnection(url, user, password);
             System.out.println("[준비] 데이터베이스 연동 성공");
         } catch(Exception e) {
+            // [여기를 고치세요!] e.getMessage()를 찍어야 진짜 이유를 압니다.
             System.out.println("[경고] 연동 실패 원인: " + e.getMessage());
         }
     }
