@@ -17,7 +17,7 @@ public class AdminView {
 
     // 1. 관리자 로그인 페이지
     public void adminLogin(){
-        if(ac == null) ac = AdminController.getInstance();
+        if(ac == null) {ac = AdminController.getInstance();}
         for(;;){
             try {
                 System.out.println("──┤ 관리자 로그인 ├─────────────────────────────────────────\n[ 관리자 로그인 ]");
@@ -41,8 +41,8 @@ public class AdminView {
 
     // 2. 관리자 메인메뉴 (로그인 후)
     public void adminMenu(){ //메소드명 안 정해서 임의지정함
-        if(ac == null) ac = AdminController.getInstance();
-        if(cv == null) cv = CompanyView.getInstance();
+        if(ac == null) {ac = AdminController.getInstance();}
+        if(cv == null) {cv = CompanyView.getInstance();}
         for(;;){
             try{
                 System.out.println("──┤ 관리자 메뉴 ├─────────────────────────────────────────");

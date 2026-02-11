@@ -87,7 +87,7 @@ public class CompanyView {
     }
 
     public void companyUpdate(){
-        if(cc == null) cc = CompanyController.getInstance();
+        if(cc == null) {cc = CompanyController.getInstance();}
         System.out.println("수정할 게시물 번호: "); int cno=scan.nextInt();
         System.out.println("기업번호: "); int companyId=scan.nextInt();
         scan.nextLine();
@@ -103,7 +103,7 @@ public class CompanyView {
     }
 
     public void companyDelete(){
-        if(cc == null) cc = CompanyController.getInstance();
+        if(cc == null) {cc = CompanyController.getInstance();}
         System.out.println("삭제할 게시물 번호");
         int cno=scan.nextInt();
         boolean result=cc.companyDelete(cno);

@@ -17,8 +17,8 @@ public class MainView {
 
     // 0. [공통] 메인 진입 화면
     public void index(){
-        if(cv == null) cv = CompanyView.getInstance();
-        if(av == null) av = AdminView.getInstance();
+        if(cv == null) {cv = CompanyView.getInstance();}
+        if(av == null) {av = AdminView.getInstance();}
         for(;;){
             try {
                 System.out.println("──┤ \uD83C\uDF1F\uD83D\uDD10 publiccenter Console \uD83D\uDD10\uD83C\uDF1F ├───────────────────────────────────");
