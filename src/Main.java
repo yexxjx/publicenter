@@ -11,5 +11,7 @@ public class Main {
             // 언제든 <shortcut actionId="ToggleLineBreakpoint"/>을(를) 눌러 중단점을 더 추가할 수 있습니다.
             System.out.println("i = " + i);
         }
+
+        System.out.println();
     }
 }
