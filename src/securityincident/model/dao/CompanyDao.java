@@ -31,7 +31,7 @@ public class CompanyDao {
     public ArrayList<CompanyDto> companyFindAll(){
         ArrayList<CompanyDto> companyDtos = new ArrayList<>();
         try{
-            String sql = "SELECT*FROM crawlerDB";
+            String sql = "SELECT*FROM company";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
@@ -90,7 +90,7 @@ public class CompanyDao {
     // 기업 삭제
     public boolean companyDelete(int cno){
         try{
-            String sql = "delete from board where cno=?";
+            String sql = "delete from company where companyId = ?";
             PreparedStatement ps=conn.prepareStatement(sql);
             ps.setInt(1,cno);
             int count=ps.executeUpdate();
