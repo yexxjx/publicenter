@@ -1,6 +1,4 @@
 package securityincident.view;
-// 작업자 이태현,
-import securityincident.controller.CompanyController;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

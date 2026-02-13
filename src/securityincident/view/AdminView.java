@@ -1,5 +1,5 @@
 package securityincident.view;
-// 작업자 이태현
+
 import securityincident.controller.AdminController;
 
 import java.util.InputMismatchException;

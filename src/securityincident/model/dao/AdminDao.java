@@ -1,5 +1,5 @@
 package securityincident.model.dao;
-// 이태현 작업
+
 public class AdminDao {
     private AdminDao(){}
     private static final AdminDao instance = new AdminDao();

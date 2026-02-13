@@ -1,6 +1,5 @@
 package securityincident.view;
 
-import securityincident.controller.AdminController;
 import securityincident.controller.CompanyController;
 import securityincident.model.dto.CompanyDto;
 
