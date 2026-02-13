@@ -40,26 +40,3 @@ public class IncidentController {
         boolean result = id.incidentDelete(incidentId);
         return result;
     }
-
-    // 보안사고조회
-    public ArrayList<IncidentDto> incidentFindAll(){
-        ArrayList<IncidentDto>db = id.incidentFindAll();
-        return db;
-    }
-
-    // 보안사고수정
-    public boolean incidentUpdate(int incidentId, String incidentYear, String incidentDate,
-                                  String incidentType, String incidentDescription, String actionTaken){
-
-        boolean result = id.incidentUpdate(
-                incidentId,
-                incidentYear,
-                incidentDate,
-                incidentType,
-                incidentDescription,
-                actionTaken
-        );
-        return result;
-
-    }
-}

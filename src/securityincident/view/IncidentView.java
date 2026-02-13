@@ -1,10 +1,7 @@
 package securityincident.view;
 
 import securityincident.controller.IncidentController;
-import securityincident.model.dao.IncidentDao;
-import securityincident.model.dto.IncidentDto;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -70,5 +67,4 @@ public class IncidentView {
         }
     }
 
-    }//class end
-
+}//class end
