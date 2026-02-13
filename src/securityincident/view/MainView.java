@@ -26,7 +26,7 @@ public class MainView {
                 System.out.print("> 선택 : ");
                 int ch = scan.nextInt();
                 scan.nextLine();
-                if (ch == 1) { cv.companyFindAll();}
+                if (ch == 1) {}
                 else if (ch == 2) { }
                 else if (ch == 3) { }
                 else if (ch == 4) { }

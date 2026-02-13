@@ -51,7 +51,7 @@ create table article(
 
 -- [1] industry
 INSERT INTO industry (industryName)
-VALUES('IT / 플랫폼'),('제조'),('금융'),('공공기관');
+VALUES('IT / 플랫폼'),('제조');
 -- [2] company
 INSERT INTO company(companyName, headOffice, foundedYear, createdAt, industryId) 
 VALUES
