@@ -56,7 +56,7 @@ public class CompanyView {
                 System.out.println("1. 기업 상세 정보 조회");
                 System.out.println("2. 이전 메뉴로 돌아가기");
                 System.out.print("선택> ");                int ch = scan.nextInt();
-                if (ch == 1) { }
+                if (ch == 1) {companyFindOne();}
                 else if (ch == 2) { return;}
                 else {
                     System.out.println("[경고] 없는 기능 번호입니다.");
@@ -70,7 +70,34 @@ public class CompanyView {
         }
     }
 
-    //
+    // * 기업 상세 조회
+    public void companyFindOne(){
+        if(cc == null) cc = CompanyController.getInstance();
+        for(;;){
+            try {
+                System.out.println("──┤ 기업 상세 정보 조회 ├───────────────────────────────────────────\n");
+                System.out.println("기업ID 입력 >");                int companyId = scan.nextInt();
+                ArrayList<CompanyDto> companyDtos = cc.companyFindOne(companyId);
+                System.out.printf(
+                        "기업ID   : %d\n기업명   : %d\n산업군   : %d\n본사위치 : %d\n설립연도 : %s\n\n보안 사고 발생 건수 : %s건\n최근 사고 발생일   : %d\n\n"
+//                        companyDtos.getCompanyId(), companyDtos.getCompanyName(), companyDtos.getIndustryIdName(), companyDtos.getHeadOffice()
+//                        companyDtos.getIncidentCount(), companyDtos.getLastDate()
+                );
+                System.out.println("======================== 다음 동작 선택 ========================");
+                System.out.println("1. 이전 메뉴로 돌아가기");
+                System.out.print("선택> ");                int ch = scan.nextInt();
+                if (ch == 1) {return;}
+                else {
+                    System.out.println("[경고] 없는 기능 번호입니다.");
+                }
+            }catch (InputMismatchException e){
+                System.out.println("[경고] 잘못된 입력 방식입니다. [재입력]");
+                scan = new Scanner(System.in);
+            }catch (Exception e){
+                System.out.println("[시스템오류] 관리자에게 문의하세요.");
+            }
+        }
+    }
 
     public void companyAdd() {
         if(cc == null) cc = CompanyController.getInstance();

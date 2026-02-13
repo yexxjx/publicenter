@@ -55,8 +55,24 @@ public class CompanyDao {
     }
 
     // * 기업 상세 조회
-    public ArrayList<CompanyDto> companyFindOne(){
+    public ArrayList<CompanyDto> companyFindOne(int companyId){
+        ArrayList<CompanyDto> companyDtos = new ArrayList<>();
+        try {
+            String sql = "SELECT COUNT(*) AS incidentCount, MAX(incidentDate) AS lastIncidentDate" +
+                    "FROM securityIncident WHERE companyId = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1,companyId);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                int incidentCount = rs.getInt("incidentCount");
+                String lastDate = rs.getString("lastIncidentDate");
+            }
 
+
+        } catch (SQLException e) {
+            System.out.println("[시스템오류] SQL 문법 문제 발생: "+e);
+        }
+        return companyDtos;
     }
 
     // 기업 등록
