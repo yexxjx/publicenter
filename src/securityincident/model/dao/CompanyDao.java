@@ -58,12 +58,14 @@ public class CompanyDao {
     public ArrayList<CompanyDto> companyFindOne(int companyId){
         ArrayList<CompanyDto> companyDtos = new ArrayList<>();
         try {
-            String sql = "SELECT COUNT(*) AS incidentCount, MAX(incidentDate) AS lastIncidentDate" +
-                    "FROM securityIncident WHERE companyId = ?;" +
-                    "SELECT c.*, i.industryName FROM company c JOIN industry i ON c.industryId = i.industryId WHERE companyId = ?;";
+            String sql = "SELECT c.*, i.industryName, " +
+                    "(SELECT COUNT(*) FROM securityIncident WHERE companyId = c.companyId) AS incidentCount, " +
+                    "(SELECT MAX(incidentDate) FROM securityIncident WHERE companyId = c.companyId) AS lastIncidentDate " +
+                    "FROM company c " +
+                    "JOIN industry i ON c.industryId = i.industryId " +
+                    "WHERE c.companyId = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1,companyId);
-            ps.setInt(2,companyId);
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
                 int incidentCount = rs.getInt("incidentCount");
