@@ -110,18 +110,5 @@ public class CompanyDto {
         this.lastDate = lastDate;
     }
 
-    @Override
-    public String toString() {
-        return "CompanyDto{" +
-                "companyId=" + companyId +
-                ", companyName='" + companyName + '\'' +
-                ", headOffice='" + headOffice + '\'' +
-                ", foundedYear=" + foundedYear +
-                ", createdAt='" + createdAt + '\'' +
-                ", industryId=" + industryId +
-                ", industryIdName='" + industryIdName + '\'' +
-                ", incidentCount=" + incidentCount +
-                ", lastDate='" + lastDate + '\'' +
-                '}';
-    }
+
 }
