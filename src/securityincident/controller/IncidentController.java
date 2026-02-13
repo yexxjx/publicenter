@@ -4,6 +4,8 @@ import securityincident.model.dao.CompanyDao;
 import securityincident.model.dao.IncidentDao;
 import securityincident.model.dto.IncidentDto;
 
+import java.util.ArrayList;
+
 public class IncidentController {
 
     // 싱글톤 - 이한승
@@ -16,7 +18,7 @@ public class IncidentController {
     private IncidentDao id = IncidentDao.getInstance();
 
     // 1. 보안사고관리
-    // 1.1. 보안사고 등록 controller - 이한승
+    // 보안사고 등록 controller - 이한승
     public boolean incidentAddByAdmin(String companyName,String incidentYear, String incidentType, String incidentDescription,String actionTaken){
 
         // 1. 기업 존재 확인
@@ -39,5 +41,33 @@ public class IncidentController {
         boolean result = id.incidentAddByAdmin(incidentDto);
 
         return result;
+    } // m end
+
+    // 보안사고삭제
+    public boolean incidentDelete(int incidentId){
+        boolean result = id.incidentDelete(incidentId);
+        return result;
+    }
+
+    // 보안사고조회
+    public ArrayList<IncidentDto> incidentFindAll(){
+        ArrayList<IncidentDto>db = id.incidentFindAll();
+        return db;
+    }
+
+    // 보안사고수정
+    public boolean incidentUpdate(int incidentId, String incidentYear, String incidentDate,
+                                  String incidentType, String incidentDescription, String actionTaken){
+
+        boolean result = id.incidentUpdate(
+                incidentId,
+                incidentYear,
+                incidentDate,
+                incidentType,
+                incidentDescription,
+                actionTaken
+        );
+        return result;
+
     }
 }
