@@ -18,6 +18,12 @@ public class CompanyController {
         return companyDtos;
     }
 
+    // * 기업 상세 정보 조회
+    public ArrayList<CompanyDto> companyFindOne(int companyId){
+        ArrayList<CompanyDto> companyDtos = cd.companyFindOne(companyId);
+        return companyDtos;
+    }
+
     // 기업 등록
     public boolean companyAdd(String companyName, String headOffice, int foundedYear, int industryId) {
         return cd.companyAdd(companyName, headOffice, foundedYear, industryId);

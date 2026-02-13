@@ -8,6 +8,8 @@ public class CompanyDto {
     private String createdAt;
     private int industryId;
     private String industryIdName;
+    private int incidentCount;
+    private String lastDate;
 
     public CompanyDto(){}
 
@@ -27,6 +29,17 @@ public class CompanyDto {
         this.createdAt = createdAt;
         this.industryId = industryId;
         this.industryIdName = industryIdName;
+    }
+    public CompanyDto(int companyId, String companyName, String headOffice, int foundedYear, String createdAt, int industryId, String industryIdName, int incidentCount, String lastDate) {
+        this.companyId = companyId;
+        this.companyName = companyName;
+        this.headOffice = headOffice;
+        this.foundedYear = foundedYear;
+        this.createdAt = createdAt;
+        this.industryId = industryId;
+        this.industryIdName = industryIdName;
+        this.incidentCount = incidentCount;
+        this.lastDate = lastDate;
     }
 
     public int getCompanyId() {
@@ -81,6 +94,22 @@ public class CompanyDto {
 
     public void setIndustryIdName(String industryIdName) { this.industryIdName = industryIdName; }
 
+    public int getIncidentCount() {
+        return incidentCount;
+    }
+
+    public void setIncidentCount(int incidentCount) {
+        this.incidentCount = incidentCount;
+    }
+
+    public String getLastDate() {
+        return lastDate;
+    }
+
+    public void setLastDate(String lastDate) {
+        this.lastDate = lastDate;
+    }
+
     @Override
     public String toString() {
         return "CompanyDto{" +
@@ -90,6 +119,9 @@ public class CompanyDto {
                 ", foundedYear=" + foundedYear +
                 ", createdAt='" + createdAt + '\'' +
                 ", industryId=" + industryId +
+                ", industryIdName='" + industryIdName + '\'' +
+                ", incidentCount=" + incidentCount +
+                ", lastDate='" + lastDate + '\'' +
                 '}';
     }
 }
