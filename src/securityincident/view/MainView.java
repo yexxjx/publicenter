@@ -48,7 +48,6 @@ public class MainView {
     // 1. 기업 정보 조회 페이지
     public void companyIndex(){
         if(cv == null) {cv = CompanyView.getInstance();}
-        if(iv == null) {iv= IndustryView.getInstance();}
         for(;;){
             try {
                 System.out.println("──┤ 기업 정보 조회 ├────────────────────────────────────────────────\n");
