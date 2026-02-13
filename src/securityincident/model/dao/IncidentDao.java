@@ -13,18 +13,6 @@ public class IncidentDao {
     private String user = "root";
     private String password ="1234";
 
-    // 싱글톤 - 이한승
-    private IncidentDao(){connect();}
-    private static final IncidentDao instance = new IncidentDao();
-    public static IncidentDao getInstance(){
-        return instance;
-    }
-
-    // 데이터 베이스 연동  - 이한승
-    private String url = "jdbc:mysql://localhost:3306/crawlerDB";
-    private String user = "root";
-    private String password ="1234";
-
     private Connection conn;
 
     private void connect(){
@@ -70,4 +58,5 @@ public class IncidentDao {
         }
         return -1;
     }
+
 }

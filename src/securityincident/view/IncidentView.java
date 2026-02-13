@@ -32,7 +32,7 @@ public class IncidentView {
                 System.out.println("5. 관리자 메뉴로 돌아가기");
                 System.out.print("선택 > ");
                 int ch = scan.nextInt();
-                if (ch == 1) { }
+                if (ch == 1) {SearchView();}
                 else if (ch == 2) { }
                 else if (ch == 3) { }
                 else if (ch == 4) { }

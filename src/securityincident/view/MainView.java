@@ -20,6 +20,7 @@ public class MainView {
     public void index(){
         if(cv == null) {cv = CompanyView.getInstance();}
         if(av == null) {av = AdminView.getInstance();}
+        if(iv == null) {iv = IndustryView.getInstance();}
         for(;;){
             try {
                 System.out.println("──┤ \uD83C\uDF1F\uD83D\uDD10 publiccenter Console \uD83D\uDD10\uD83C\uDF1F ├───────────────────────────────────");
@@ -28,7 +29,7 @@ public class MainView {
                 int ch = scan.nextInt();
                 scan.nextLine();
                 if (ch == 1) {companyIndex();}
-                else if (ch == 2) { }
+                else if (ch == 2) {iv.index();}
                 else if (ch == 3) { }
                 else if (ch == 4) { }
                 else if (ch == 5) { av.adminLogin();}
