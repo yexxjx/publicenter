@@ -67,8 +67,10 @@ public class CompanyView {
             }catch (Exception e){
                 System.out.println("[시스템오류] 관리자에게 문의하세요.");
             }
-        }//for end
+        }
     }
+
+    //
 
     public void companyAdd() {
         if(cc == null) cc = CompanyController.getInstance();

@@ -54,6 +54,11 @@ public class CompanyDao {
         return companyDtos;
     }
 
+    // * 기업 상세 조회
+    public ArrayList<CompanyDto> companyFindOne(){
+
+    }
+
     // 기업 등록
     public boolean companyAdd(String companyName, String headOffice, int foundedYear, int industryId) {
         try {
