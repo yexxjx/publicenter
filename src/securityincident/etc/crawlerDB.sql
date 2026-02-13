@@ -12,7 +12,7 @@ create table company (
     companyName VARCHAR(100) not null unique ,
     headOffice varchar(100),
     foundedYear INT ,
-    createdAt varchar(20) not null unique,
+    createdAt datetime default now(),
     industryId int not null,
     constraint foreign key(industryId) references industry(industryId) on delete cascade on update cascade
 );
@@ -51,20 +51,20 @@ create table article(
 
 -- [1] industry
 INSERT INTO industry (industryName)
-VALUES('IT / 플랫폼'),('제조'),('금융'),('공공기관');
+VALUES('IT / 플랫폼'),('제조');
 -- [2] company
-INSERT INTO company(companyName, headOffice, foundedYear, createdAt, industryId) 
+INSERT INTO company (companyName, headOffice, foundedYear, createdAt, industryId)
 VALUES
-('네이버', '서울', 1999, '2020-07-29 01:00:00', 1),
-('카카오', '서울', 2010, '2020-07-30 13:00:00', 1),
-('삼성전자', '수원', 1969, '2020-07-31 13:00:00', 1),
-('LG전자', '강남', 1958, '2020-08-01 13:00:00', 1),
-('국민은행', '서울', 2001, '2020-08-02 13:00:00', 3),
-('신한은행', '서울', 1897, '2020-08-03 13:00:00', 3),
-('한국전력공사', '나주', 1961, '2020-08-04 13:00:00', 4),
-('국민건강보험공단', '원주', 2000, '2020-08-05 13:00:00', 4),
-('쿠팡', '서울', 2010, '2020-08-06 13:00:00', 2),
-('배달의민족', '서울', 2010, '2020-08-07 13:00:00', 2);
+    ('카카오', '제주특별자치도 제주시 첨단로 242', 1995, '2020-07-29 01:00:00', 1),
+    ('네이버', '경기도 성남시 분당구 불정로 6', 1999, '2020-07-30 13:00:00', 1),
+    ('메타', '미국 캘리포니아주 멘로파크', 2004, '2020-07-31 13:00:00', 1),
+    ('당근', '서울특별시 서초구 강남대로 465', 2015, '2020-08-01 13:00:00', 1),
+    ('야놀자', '서울특별시 강남구 테헤란로 427', 2005, '2020-08-02 13:00:00', 1),
+    ('삼성전자', '경기도 수원시 영통구 삼성로 129', 1969, '2020-08-03 13:00:00', 2),
+    ('LG전자', '서울특별시 영등포구 여의대로 128', 1958, '2020-08-04 13:00:00', 2),
+    ('현대자동차', '서울특별시 서초구 헌릉로 12', 1967, '2020-08-05 13:00:00', 2),
+    ('TSMC', '대만 신주과학산업단지', 1987, '2020-08-06 13:00:00', 2),
+    ('SK하이닉스', '경기도 이천시 부발읍 경충대로 2091', 1983, '2020-08-07 13:00:00', 2);
 -- [3] Sample
 INSERT INTO securityIncident 
 (companyId, incidentYear, incidentDate, incidentType, incidentDescription, actionTaken, approvalStatus, approvalTime )

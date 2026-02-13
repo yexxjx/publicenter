@@ -10,21 +10,23 @@ public class AdminView {
     private static final AdminView instance = new AdminView();
     public static AdminView getInstance(){return instance;}
 
-    private AdminController ac = AdminController.getInstance();
-    private CompanyView cv = CompanyView.getInstance();
+    private AdminController ac;
+    private CompanyView cv;
 
     Scanner scan = new Scanner(System.in);
 
     // 1. 관리자 로그인 페이지
     public void adminLogin(){
+        if(ac == null) {ac = AdminController.getInstance();}
         for(;;){
             try {
-                System.out.println("▶ 메뉴 선택 : 5\n──┤ 관리자 로그인 ├─────────────────────────────────────────\n[ 관리자 로그인 ]");
+                System.out.println("──┤ 관리자 로그인 ├─────────────────────────────────────────\n[ 관리자 로그인 ]");
                 System.out.print("관리자 비밀번호 입력 > ");   String pw = scan.nextLine();
                 boolean result = ac.adminLogin(pw);
                 if(result){
                     System.out.println("********\n\n[ 로그인 성공 ]\n관리자 권한으로 접속합니다.");
                     adminMenu();
+                    if(ac.getLoinSession() == 0) {return;}
                 }else{
                     System.out.println("********\n\n[ 로그인 실패 ]\n비밀번호가 올바르지 않습니다.\n다시 시도해주세요.");
                 }
@@ -39,6 +41,8 @@ public class AdminView {
 
     // 2. 관리자 메인메뉴 (로그인 후)
     public void adminMenu(){ //메소드명 안 정해서 임의지정함
+        if(ac == null) {ac = AdminController.getInstance();}
+        if(cv == null) {cv = CompanyView.getInstance();}
         for(;;){
             try{
                 System.out.println("──┤ 관리자 메뉴 ├─────────────────────────────────────────");
@@ -52,7 +56,7 @@ public class AdminView {
                 else if (ch == 2) {}
                 else if (ch == 3) {}
                 else if (ch == 4) {}
-                else if (ch == 5) {ac.adminLogout();}
+                else if (ch == 5) {ac.adminLogout(); return;}
                 else {
                     System.out.println("[경고] 없는 기능 번호입니다.");
                 }
@@ -60,7 +64,7 @@ public class AdminView {
                 System.out.println("[경고] 잘못된 입력 방식입니다. [재입력]");
                 scan = new Scanner(System.in);
             }catch (Exception e){
-                System.out.println("[시스템오류] 관리자에게 문의하세요.");
+                System.out.println("[시스템오류] 관리자에게 문의하세요.");e.printStackTrace();
             }
         }
     }

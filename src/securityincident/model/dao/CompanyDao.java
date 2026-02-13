@@ -20,9 +20,7 @@ public class CompanyDao {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(url, user, password);
-            System.out.println("[준비] 데이터베이스 연동 성공");
         } catch(Exception e) {
-            // [여기를 고치세요!] e.getMessage()를 찍어야 진짜 이유를 압니다.
             System.out.println("[경고] 연동 실패 원인: " + e.getMessage());
         }
     }
@@ -31,7 +29,10 @@ public class CompanyDao {
     public ArrayList<CompanyDto> companyFindAll(){
         ArrayList<CompanyDto> companyDtos = new ArrayList<>();
         try{
-            String sql = "SELECT*FROM company";
+            String sql = "SELECT c.*, i.industryName " +
+                    "FROM company c " +
+                    "JOIN industry i ON c.industryId = i.industryId " +
+                    "ORDER BY c.companyId ASC";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
@@ -40,10 +41,32 @@ public class CompanyDao {
                 String headOffice = rs.getString("headOffice");
                 int foundedYear = rs.getInt("foundedYear");
                 String createdAt = rs.getString("createdAt");
-                int industryId  = rs.getInt("industryId");
-                CompanyDto companyDto = new CompanyDto(companyId,companyName,headOffice,foundedYear,createdAt,industryId);
+                int industryId = rs.getInt("industryId");
+                String industryName = rs.getString("industryName");
+                CompanyDto companyDto = new CompanyDto(companyId, companyName, headOffice, foundedYear, createdAt, industryId, industryName);
                 companyDtos.add(companyDto);
             }
+        } catch (SQLException e) {
+            System.out.println("[시스템오류] SQL 문법 문제 발생: "+e);
+        }
+        return companyDtos;
+    }
+
+    // * 기업 상세 조회
+    public ArrayList<CompanyDto> companyFindOne(int companyId){
+        ArrayList<CompanyDto> companyDtos = new ArrayList<>();
+        try {
+            String sql = "SELECT COUNT(*) AS incidentCount, MAX(incidentDate) AS lastIncidentDate" +
+                    "FROM securityIncident WHERE companyId = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1,companyId);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                int incidentCount = rs.getInt("incidentCount");
+                String lastDate = rs.getString("lastIncidentDate");
+            }
+
+
         } catch (SQLException e) {
             System.out.println("[시스템오류] SQL 문법 문제 발생: "+e);
         }
