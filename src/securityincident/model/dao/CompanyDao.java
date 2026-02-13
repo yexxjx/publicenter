@@ -34,7 +34,7 @@ public class CompanyDao {
             String sql = "SELECT c.*, i.industryName " +
                     "FROM company c " +
                     "JOIN industry i ON c.industryId = i.industryId " +
-                    "ORDER BY c.companyId ASC";
+                    "ORDER BY c.companyId ASC;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
@@ -59,16 +59,23 @@ public class CompanyDao {
         ArrayList<CompanyDto> companyDtos = new ArrayList<>();
         try {
             String sql = "SELECT COUNT(*) AS incidentCount, MAX(incidentDate) AS lastIncidentDate" +
-                    "FROM securityIncident WHERE companyId = ?";
+                    "FROM securityIncident WHERE companyId = ?;" +
+                    "SELECT c.*, i.industryName FROM company c JOIN industry i ON c.industryId = i.industryId WHERE companyId = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1,companyId);
+            ps.setInt(2,companyId);
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
                 int incidentCount = rs.getInt("incidentCount");
                 String lastDate = rs.getString("lastIncidentDate");
+                String companyName = rs.getString("companyName");
+                String headOffice = rs.getString("headOffice");
+                int foundedYear = rs.getInt("foundedYear");
+                int industryId = rs.getInt("industryId");
+                String industryName = rs.getString("industryName");
+                CompanyDto companyDto = new CompanyDto(companyId,companyName,headOffice,foundedYear,null,industryId,industryName,incidentCount,lastDate);
+                companyDtos.add(companyDto);
             }
-
-
         } catch (SQLException e) {
             System.out.println("[시스템오류] SQL 문법 문제 발생: "+e);
         }

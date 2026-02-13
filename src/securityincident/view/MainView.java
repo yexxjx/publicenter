@@ -54,7 +54,7 @@ public class MainView {
                 System.out.print("선택 > ");
                 int ch = scan.nextInt();
                 scan.nextLine();
-                if (ch == 1) {cv.index();}
+                if (ch == 1) {cv.companyFindAll();}
                 else if (ch == 2) { }
                 else if (ch == 3) { }
                 else if (ch == 4) { }
