@@ -143,4 +143,59 @@ public class IncidentView {
     }
 
 
+    // 2. 검색 필터 페이지
+    public void SearchView(){
+        for(;;){
+            System.out.println("──┤ 사고 검색 / 필터 ├──────────────────────────────────────");
+            System.out.println("1. 연도별 보안 사고 검색");
+            System.out.println("2. 사고 유형별 검색");
+            System.out.println("3. 산업군별 검색");
+            System.out.println("4. 이전 메뉴로 돌아가기");
+            System.out.print("선택 > "); int ch = scan.nextInt(); scan.nextLine();
+
+            if(ch==1){incidentFindByYear();}
+            else if(ch==2){}
+            else if(ch==3){}
+            else if(ch==4){}
+
+        }
+    }
+    //연도별 보안 사고 검색
+    public void incidentFindByYear(){
+
+        System.out.print("연도 입력 > "); String incidentYear = scan.nextLine();
+        ArrayList<IncidentDto>db=ic.incidentFindByYear(incidentYear);
+
+        if (db.isEmpty()) {
+            System.out.println("❌ 해당 연도(" + incidentYear + ")에 등록된 사고 내역이 없습니다.");
+        }
+        else {
+            System.out.println("\n[ " + incidentYear + "년도 사고 검색 결과 ]");
+            for (IncidentDto a : db) {
+                System.out.printf(
+                        "사고번호: %d, 발생연도: %s, 발생일: %s, 유형: %s, 상세내용: %s, 조치사항: %s, 승인상태: %s, 승인시간: %s, 기업번호: %d \n",
+                        a.getIncidentId(),
+                        a.getIncidentYear(),
+                        a.getIncidentDate(),
+                        a.getIncidentType(),
+                        a.getIncidentDescription(),
+                        a.getActionTaken(),
+                        a.getApprovalStatus(),
+                        a.getApprovalTime(),
+                        a.getCompanyId()
+                );
+             }
+
+
+
+
+    }
+
+
+    //사고 유형별 보안 사고 검색
+
+
+    //산업군별 보안 사고 검색
+
+
 }//class end
