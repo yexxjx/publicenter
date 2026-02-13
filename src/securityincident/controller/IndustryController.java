@@ -25,8 +25,8 @@ public class IndustryController{
     }
 
     // 산업군 수정
-    public boolean industryUpdate(int ino, int industryId, String industryName){
-        boolean result=id.industryUpdate(ino, industryId, industryName);
+    public boolean industryUpdate(int industryId, String industryName){
+        boolean result=id.industryUpdate(industryId, industryName);
         return result;
     }
 

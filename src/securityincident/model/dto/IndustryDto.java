@@ -1,24 +1,14 @@
 package securityincident.model.dto;
 
 public class IndustryDto {
-    int ino;
     int industryId;
     String industryName;
 
     public IndustryDto(){}
 
-    public IndustryDto(int ino, int industryId, String industryName) {
-        this.ino = ino;
+    public IndustryDto(int industryId, String industryName) {
         this.industryId = industryId;
         this.industryName = industryName;
-    }
-
-    public int getIno() {
-        return ino;
-    }
-
-    public void setIno(int ino) {
-        this.ino = ino;
     }
 
     public int getIndustryId() {
@@ -40,8 +30,7 @@ public class IndustryDto {
     @Override
     public String toString() {
         return "IndustryDto{" +
-                "ino=" + ino +
-                ", industryId=" + industryId +
+                "industryId=" + industryId +
                 ", industryName='" + industryName + '\'' +
                 '}';
     }

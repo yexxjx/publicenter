@@ -12,6 +12,7 @@ public class MainView {
 
     private CompanyView cv;
     private AdminView av;
+    private IndustryView iv;
 
     Scanner scan = new Scanner(System.in);
 
@@ -26,7 +27,7 @@ public class MainView {
                 System.out.print("> 선택 : ");
                 int ch = scan.nextInt();
                 scan.nextLine();
-                if (ch == 1) {}
+                if (ch == 1) {companyIndex();}
                 else if (ch == 2) { }
                 else if (ch == 3) { }
                 else if (ch == 4) { }
@@ -44,4 +45,38 @@ public class MainView {
         }//for end
     }//index end
 
+    // 1. 기업 정보 조회 페이지
+    public void companyIndex(){
+        if(cv == null) {cv = CompanyView.getInstance();}
+        if(iv == null) {iv= IndustryView.getInstance();}
+        for(;;){
+            try {
+                System.out.println("──┤ 기업 정보 조회 ├────────────────────────────────────────────────\n");
+                System.out.println("1. 전체 기업 목록 조회\n2. 산업군별 기업 조회\n3. 기업 상세 정보 조회\n4. 이전 메뉴로 돌아가기\n\n");
+                System.out.print("선택 > ");
+                int ch = scan.nextInt();
+                scan.nextLine();
+                if (ch == 1) {cv.companyFindAll();}
+                else if (ch == 2) {iv.index();}
+                else if (ch == 3) { }
+                else if (ch == 4) { }
+                else {
+                    System.out.println("[경고] 없는 기능 번호입니다.");
+                }
+            }catch (InputMismatchException e){
+                System.out.println("[경고] 잘못된 입력 방식입니다. [재입력]");
+                scan.nextLine(); // 입력 객체 초기화 (잘못된 입력값 제거)
+            }catch (Exception e){ // Exception은 예외 중 슈퍼클래스로 모든 예외 처리가 가능하다.
+                System.out.println("[시스템오류] 관리자에게 문의하세요.");
+            }
+        }//for end
+    }//index end
+
+    // 2. 보안 사고 조회 페이지
+
+    // 3. 사고 검색/필터 페이지
+
+    // 4. 통계 보기 페이지
+
+    // 5. 관리자 페이지 <- adminView에 있습니다.
 }

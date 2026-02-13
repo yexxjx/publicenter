@@ -33,7 +33,7 @@ public class IndustryView {
                 System.out.println("[경고] 잘못된 입력 방식입니다. [재입력]");
                 scan = new Scanner(System.in);
             } catch (Exception e) {
-                System.out.println("[시스템오류] 관리자에게 문의");
+                System.out.println("[시스템오류] 관리자에게 문의"+e);
             }
         }
     }
@@ -75,6 +75,7 @@ public class IndustryView {
     public void industryAdd(){
         scan.nextLine();
         System.out.println("산업군ID: "); int industryId=scan.nextInt();
+        scan.nextLine();
         System.out.println("산업군: "); String industryName=scan.next();
         boolean result=ic.industryAdd(industryId, industryName);
         if(result){
@@ -85,11 +86,10 @@ public class IndustryView {
 
     // 산업군 수정
     public void industryUpdate(){
-        System.out.println("수정할 산업군 번호"); int ino=scan.nextInt();
+        System.out.println("수정할 산업군 번호"); int industryId=scan.nextInt();
         scan.nextLine();
-        System.out.println("수정할 산업군ID"); int industryId=scan.nextInt();
         System.out.println("수정할 산업군"); String industryName=scan.nextLine();
-        boolean result=ic.industryUpdate(ino, industryId, industryName);
+        boolean result=ic.industryUpdate(industryId, industryName);
         if(result){
             System.out.println("[안내] 사업군 수정 성공");}
         else{
