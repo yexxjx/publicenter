@@ -1,13 +1,13 @@
 package securityincident.model.dto;
 
 public class CompanyDto {
-    int companyId;
-    String companyName;
-    String headOffice;
-    int foundedYear;
-    String createdAt;
-    int industryId;
-    String industryIdName;
+    private int companyId;
+    private String companyName;
+    private String headOffice;
+    private int foundedYear;
+    private String createdAt;
+    private int industryId;
+    private String industryIdName;
 
     public CompanyDto(){}
 
