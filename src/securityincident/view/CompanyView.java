@@ -76,12 +76,12 @@ public class CompanyView {
         for(;;){
             try {
                 System.out.println("──┤ 기업 상세 정보 조회 ├───────────────────────────────────────────\n");
-                System.out.println("기업ID 입력 >");                int companyId = scan.nextInt();
+                System.out.print("기업ID 입력 >");                int companyId = scan.nextInt();
                 ArrayList<CompanyDto> companyDtos = cc.companyFindOne(companyId);
                 for(CompanyDto list: companyDtos) {
                     System.out.printf(
                             "기업ID   : %d\n기업명   : %d\n산업군   : %d\n본사위치 : %d\n설립연도 : %s\n\n보안 사고 발생 건수 : %s건\n최근 사고 발생일   : %d\n\n",
-                            list.getCompanyId(), list.getCompanyName(), list.getIndustryIdName()
+                            list.getCompanyId(), list.getCompanyName(), list.getIndustryIdName(), list.getHeadOffice(), list.getCreatedAt(),list.getIncidentCount(),list.getLastDate()
                     );
                 }
                 System.out.println("======================== 다음 동작 선택 ========================");

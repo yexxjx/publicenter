@@ -56,7 +56,27 @@ public class AdminView {
                 else if (ch == 2) {}
                 else if (ch == 3) {}
                 else if (ch == 4) {}
-                else if (ch == 5) {ac.adminLogout(); return;}
+                else if (ch == 5) {adminLogout(); return;}
+                else {
+                    System.out.println("[경고] 없는 기능 번호입니다.");
+                }
+            }catch (InputMismatchException e){
+                System.out.println("[경고] 잘못된 입력 방식입니다. [재입력]");
+                scan = new Scanner(System.in);
+            }catch (Exception e){
+                System.out.println("[시스템오류] 관리자에게 문의하세요.");e.printStackTrace();
+            }
+        }
+    }
+
+    // 3. 로그아웃
+    public void adminLogout(){
+        for(;;){
+            try{
+                System.out.println("정말 로그아웃 하시겠습니까?\n1. 예\n2. 아니오");
+                System.out.print("선택 > ");      int ch = scan.nextInt();
+                if (ch == 1){ac.adminLogout();System.out.println("[ 로그아웃 완료 ]\n"+"메인 메뉴로 돌아갑니다.");return;}
+                else if (ch == 2) {return;}
                 else {
                     System.out.println("[경고] 없는 기능 번호입니다.");
                 }

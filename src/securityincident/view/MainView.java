@@ -56,8 +56,8 @@ public class MainView {
                 scan.nextLine();
                 if (ch == 1) {cv.companyFindAll();}
                 else if (ch == 2) { }
-                else if (ch == 3) { }
-                else if (ch == 4) { }
+                else if (ch == 3) {cv.companyFindOne();}
+                else if (ch == 4) {return;}
                 else {
                     System.out.println("[경고] 없는 기능 번호입니다.");
                 }
