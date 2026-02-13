@@ -32,14 +32,14 @@ public class MainView {
                 else if (ch == 3) { }
                 else if (ch == 4) { }
                 else if (ch == 5) { av.adminLogin();}
-                else if (ch == 6) { }
+                else if (ch == 6) { programEnd();}
                 else {
                     System.out.println("[경고] 없는 기능 번호입니다.");
                 }
             }catch (InputMismatchException e){
                 System.out.println("[경고] 잘못된 입력 방식입니다. [재입력]");
-                scan.nextLine(); // 입력 객체 초기화 (잘못된 입력값 제거)
-            }catch (Exception e){ // Exception은 예외 중 슈퍼클래스로 모든 예외 처리가 가능하다.
+                scan.nextLine();
+            }catch (Exception e){
                 System.out.println("[시스템오류] 관리자에게 문의하세요.");
             }
         }//for end
@@ -48,7 +48,6 @@ public class MainView {
     // 1. 기업 정보 조회 페이지
     public void companyIndex(){
         if(cv == null) {cv = CompanyView.getInstance();}
-        if(iv == null) {iv= IndustryView.getInstance();}
         for(;;){
             try {
                 System.out.println("──┤ 기업 정보 조회 ├────────────────────────────────────────────────\n");
@@ -65,8 +64,8 @@ public class MainView {
                 }
             }catch (InputMismatchException e){
                 System.out.println("[경고] 잘못된 입력 방식입니다. [재입력]");
-                scan.nextLine(); // 입력 객체 초기화 (잘못된 입력값 제거)
-            }catch (Exception e){ // Exception은 예외 중 슈퍼클래스로 모든 예외 처리가 가능하다.
+                scan.nextLine();
+            }catch (Exception e){
                 System.out.println("[시스템오류] 관리자에게 문의하세요.");
             }
         }//for end
@@ -79,4 +78,27 @@ public class MainView {
     // 4. 통계 보기 페이지
 
     // 5. 관리자 페이지 <- adminView에 있습니다.
+
+    // 6. 프로그램 종료 페이지
+    public void programEnd(){
+        for(;;){
+            try {
+                System.out.println("──┤ 프로그램 종료 ├────────────────────────────────────────────────\n");
+                System.out.println("프로그램을 종료하시겠습니까? \n\n1. 예(프로그램 종료)\n2. 아니오(메인 메뉴로 돌아가기)\n");
+                System.out.print("선택 > ");
+                int ch = scan.nextInt();
+                scan.nextLine();
+                if (ch == 1) {
+                    System.out.println("프로그램을 종료합니다.\n이용해주셔서 감사합니다."); System.exit(0);
+                }
+                else if (ch == 2){return;}
+                else {
+                    System.out.println("[경고] 없는 기능 번호입니다.");
+                }
+            }catch (Exception e){
+                System.out.println("[시스템오류] 관리자에게 문의하세요.");
+            }
+        }
+    }
+
 }
