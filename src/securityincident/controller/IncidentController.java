@@ -3,8 +3,6 @@ package securityincident.controller;
 import securityincident.model.dao.IncidentDao;
 import securityincident.model.dto.IncidentDto;
 
-import java.util.ArrayList;
-
 public class IncidentController {
     private IncidentController(){}
     private static final IncidentController instance = new IncidentController();

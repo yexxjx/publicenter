@@ -3,7 +3,6 @@ package securityincident.model.dao;
 import securityincident.model.dto.IncidentDto;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 public class IncidentDao {
     private IncidentDao(){connect();}
