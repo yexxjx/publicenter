@@ -80,8 +80,6 @@ public class CompanyView {
                 ArrayList<CompanyDto> companyDtos = cc.companyFindOne(companyId);
                 System.out.printf(
                         "기업ID   : %d\n기업명   : %d\n산업군   : %d\n본사위치 : %d\n설립연도 : %s\n\n보안 사고 발생 건수 : %s건\n최근 사고 발생일   : %d\n\n"
-//                        companyDtos.getCompanyId(), companyDtos.getCompanyName(), companyDtos.getIndustryIdName(), companyDtos.getHeadOffice()
-//                        companyDtos.getIncidentCount(), companyDtos.getLastDate()
                 );
                 System.out.println("======================== 다음 동작 선택 ========================");
                 System.out.println("1. 이전 메뉴로 돌아가기");

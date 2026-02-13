@@ -38,8 +38,8 @@ public class MainView {
                 }
             }catch (InputMismatchException e){
                 System.out.println("[경고] 잘못된 입력 방식입니다. [재입력]");
-                scan.nextLine(); // 입력 객체 초기화 (잘못된 입력값 제거)
-            }catch (Exception e){ // Exception은 예외 중 슈퍼클래스로 모든 예외 처리가 가능하다.
+                scan.nextLine();
+            }catch (Exception e){
                 System.out.println("[시스템오류] 관리자에게 문의하세요.");
             }
         }//for end
@@ -65,8 +65,8 @@ public class MainView {
                 }
             }catch (InputMismatchException e){
                 System.out.println("[경고] 잘못된 입력 방식입니다. [재입력]");
-                scan.nextLine(); // 입력 객체 초기화 (잘못된 입력값 제거)
-            }catch (Exception e){ // Exception은 예외 중 슈퍼클래스로 모든 예외 처리가 가능하다.
+                scan.nextLine();
+            }catch (Exception e){
                 System.out.println("[시스템오류] 관리자에게 문의하세요.");
             }
         }//for end
@@ -99,7 +99,7 @@ public class MainView {
             }catch (Exception e){
                 System.out.println("[시스템오류] 관리자에게 문의하세요.");
             }
-        }//for end
+        }
     }
 
 }
