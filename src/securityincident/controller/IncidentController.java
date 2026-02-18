@@ -18,7 +18,7 @@ public class IncidentController {
     private IncidentDao id = IncidentDao.getInstance();
 
     // 1. 보안사고관리
-    // 보안사고 등록 controller - 이한승
+    // 보안사고 등록 controller
     public boolean incidentAddByAdmin(String companyName,String incidentYear, String incidentType, String incidentDescription,String actionTaken){
 
         // 1. 기업 존재 확인
@@ -70,4 +70,23 @@ public class IncidentController {
         return result;
 
     }
-}
+
+    //연도별 보안 사고 검색
+     public ArrayList<IncidentDto> incidentFindByYear(String year){
+        ArrayList<IncidentDto>db = id.incidentFindByYear(year);
+        return db;
+     }
+
+    // 유형 목록 가져오기
+    public ArrayList<String> getIncidentTypeList(){
+        return id.getIncidentTypeList();
+    }
+
+    // 유형별 검색
+    public ArrayList<IncidentDto> incidentFindByType(String type){
+        return id.incidentFindByType(type);
+    }
+
+
+
+} // class end
