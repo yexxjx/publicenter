@@ -15,7 +15,8 @@ public class IncidentView {
     // 싱글톤 - 이한승
     private IncidentView(){}
     private static final IncidentView instance = new IncidentView();
-    public static IncidentView getInstance(){
+
+    public static IncidentView getInstance() {
         return instance;
     }
 
@@ -170,7 +171,7 @@ public class IncidentView {
             if(ch==1){incidentFindByYear();}
             else if(ch==2){}
             else if(ch==3){}
-            else if(ch==4){return;}
+            else if(ch==4){}
 
         }
     }

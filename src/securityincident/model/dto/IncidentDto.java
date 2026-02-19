@@ -15,7 +15,7 @@ public class IncidentDto {
     private String companyName;
     private String industryName;
 
-    // 기본 생성자
+    // 기본 생성자 - 이한승
     public IncidentDto(){}
 
     // 전체 생성자
@@ -31,7 +31,6 @@ public class IncidentDto {
         this.companyId = companyId;
         this.companyName = companyName;
     }
-
 
 
     // 조회
@@ -56,7 +55,6 @@ public class IncidentDto {
         this.incidentType = incidentType;
         this.incidentDate = incidentDate;
     }
-
     public IncidentDto(int incidentId, String companyName, String industryName, String incidentType, String incidentDate, String approvalStatus) {
         this.incidentId = incidentId;
         this.companyName = companyName;
@@ -65,7 +63,6 @@ public class IncidentDto {
         this.incidentDate = incidentDate;
         this.approvalStatus = approvalStatus;
     }
-
 
     // getter setter - 이한승
     public long getIncidentId() {
