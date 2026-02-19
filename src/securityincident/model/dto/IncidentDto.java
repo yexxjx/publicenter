@@ -12,11 +12,29 @@ public class IncidentDto {
     private String approvalStatus;
     private String approvalTime;
     private int companyId;
+    private String companyName;
+    private String industryName;
 
-    // 기본 생성자 - 이한승
+    // 기본 생성자
     public IncidentDto(){}
 
-    // 전체 생성자 - 이한승
+    // 전체 생성자
+    public IncidentDto(long incidentId, String incidentYear, String incidentDate, String incidentType, String incidentDescription, String actionTaken, String approvalStatus, String approvalTime, int companyId, String companyName) {
+        this.incidentId = incidentId;
+        this.incidentYear = incidentYear;
+        this.incidentDate = incidentDate;
+        this.incidentType = incidentType;
+        this.incidentDescription = incidentDescription;
+        this.actionTaken = actionTaken;
+        this.approvalStatus = approvalStatus;
+        this.approvalTime = approvalTime;
+        this.companyId = companyId;
+        this.companyName = companyName;
+    }
+
+
+
+    // 조회
     public IncidentDto(long incidentId, String incidentYear, String incidentDate, String incidentType, String incidentDescription, String actionTaken, String approvalStatus, String approvalTime, int companyId) {
         this.incidentId = incidentId;
         this.incidentYear = incidentYear;
@@ -27,6 +45,25 @@ public class IncidentDto {
         this.approvalStatus = approvalStatus;
         this.approvalTime = approvalTime;
         this.companyId = companyId;
+    }
+
+
+
+    // 기업명 생성자
+    public IncidentDto(int incidentId, String companyName, String incidentType, String incidentDate) {
+        this.incidentId = incidentId;
+        this.companyName = companyName;
+        this.incidentType = incidentType;
+        this.incidentDate = incidentDate;
+    }
+
+    public IncidentDto(int incidentId, String companyName, String industryName, String incidentType, String incidentDate, String approvalStatus) {
+        this.incidentId = incidentId;
+        this.companyName = companyName;
+        this.industryName = industryName;
+        this.incidentType = incidentType;
+        this.incidentDate = incidentDate;
+        this.approvalStatus = approvalStatus;
     }
 
 
@@ -101,5 +138,21 @@ public class IncidentDto {
 
     public void setCompanyId(int companyId) {
         this.companyId = companyId;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getIndustryName() {
+        return industryName;
+    }
+
+    public void setIndustryName(String industryName) {
+        this.industryName = industryName;
     }
 }

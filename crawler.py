@@ -57,12 +57,11 @@ def build_url(keyword: str, page=1) -> str:
 
 def make_driver():
     options = Options()
-    options.add_argument("--headless")  # Java 연동 대비
+    options.add_argument("--headless=new")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    service = Service(ChromeDriverManager().install())
-    return webdriver.Chrome(service=service, options=options)
+
+    return webdriver.Chrome(options=options)
 
 # -------------------------------
 # 5. 크롤링 실행
