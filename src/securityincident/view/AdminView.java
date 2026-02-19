@@ -63,17 +63,22 @@ public class AdminView {
                 else if (ch == 3) {
 
                     scan.nextLine();
+
                     System.out.println("──┤ 승인 대기 사고 목록 ├────────────────────────");
 
                     ArrayList<IncidentDto> list =
-                            IncidentController.getInstance().incidentFindAll();
+                            IncidentController.getInstance().findPendingIncidents();
+
+                    if(list.isEmpty()){
+                        System.out.println("승인 대기 사고가 없습니다.");
+                        break;
+                    }
 
                     for(IncidentDto dto : list){
-                        if(dto.getApprovalStatus() == null){
-                            System.out.println("사고번호: " + dto.getIncidentId()
-                                    + " | 기업: " + dto.getCompanyName()
-                                    + " | 유형: " + dto.getIncidentType());
-                        }
+                        System.out.println("사고번호: " + dto.getIncidentId()
+                                + " | 기업: " + dto.getCompanyName()
+                                + " | 유형: " + dto.getIncidentType()
+                                + " | 날짜: " + dto.getIncidentDate());
                     }
 
                     System.out.print("승인할 사고 번호 입력 > ");
@@ -85,9 +90,10 @@ public class AdminView {
                     if(result){
                         System.out.println("[완료] 사고 승인 처리되었습니다.");
                     }else{
-                        System.out.println("[실패] 해당 사고를 찾을 수 없습니다.");
+                        System.out.println("[실패] 승인 가능한 사고가 아닙니다.");
                     }
                 }
+
 
                 else if (ch == 4) {
                     scan.nextLine(); // 버퍼 정리

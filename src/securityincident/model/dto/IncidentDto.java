@@ -164,4 +164,20 @@ public class IncidentDto {
         this.industryName = industryName;
     }
 
+    @Override
+    public String toString() {
+        return "IncidentDto{" +
+                "incidentId=" + incidentId +
+                ", incidentYear='" + incidentYear + '\'' +
+                ", incidentDate='" + incidentDate + '\'' +
+                ", incidentType='" + incidentType + '\'' +
+                ", incidentDescription='" + incidentDescription + '\'' +
+                ", actionTaken='" + actionTaken + '\'' +
+                ", approvalStatus='" + approvalStatus + '\'' +
+                ", approvalTime='" + approvalTime + '\'' +
+                ", companyId=" + companyId +
+                ", companyName='" + companyName + '\'' +
+                ", industryName='" + industryName + '\'' +
+                '}';
+    }
 }
