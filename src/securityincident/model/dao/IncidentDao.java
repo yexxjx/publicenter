@@ -243,13 +243,6 @@ public class IncidentDao {
         return db;
     }
 
-
-
-
-
-
-
-
     // 산업군별 검색
 
 
