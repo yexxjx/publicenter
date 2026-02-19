@@ -1,26 +1,26 @@
 import pymysql
+import schedule
+import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from urllib.parse import quote
 from datetime import datetime
-import time
+import re
 
 # -------------------------------
-# 1. DB 설정
+# DB 설정
 # -------------------------------
 DB_CONFIG = {
     'host': 'localhost',
     'user': 'root',
-    'password': '1234',      # 본인 비밀번호
+    'password': '1234',
     'db': 'security_db',
     'charset': 'utf8mb4'
 }
 
 # -------------------------------
-# 2. 기업 목록
+# 기업 목록
 # -------------------------------
 COMPANIES = {
     1: "카카오",
@@ -35,39 +35,40 @@ COMPANIES = {
     10: "SK하이닉스"
 }
 
-# -------------------------------
-# 3. 보안 키워드
-# -------------------------------
 SECURITY_KEYWORDS = [
     "해킹","침해","유출","랜섬웨어","피싱",
     "취약점","사이버","악성코드","보안","공격"
 ]
 
 # -------------------------------
-# 4. 유틸 함수
+# 유틸 함수
 # -------------------------------
 def euckr_quote(keyword: str) -> str:
     return quote(keyword.encode("euc-kr"))
 
-def build_url(keyword: str, page=1) -> str:
+def build_url(keyword: str) -> str:
     base = "https://www.boannews.com/search/news_total.asp"
-    if page == 1:
-        return f"{base}?search=title&find={euckr_quote(keyword)}"
-    return f"{base}?Page={page}&search=title&find={euckr_quote(keyword)}"
+    return f"{base}?search=title&find={euckr_quote(keyword)}"
 
 def make_driver():
     options = Options()
-    options.add_argument("--headless")  # Java 연동 대비
+    options.add_argument("--headless=new")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    service = Service(ChromeDriverManager().install())
-    return webdriver.Chrome(service=service, options=options)
+    return webdriver.Chrome(options=options)
+
+def parse_date(text: str) -> str:
+    match = re.search(r'(\d{4})[.\-년]\s*(\d{1,2})[.\-월]\s*(\d{1,2})', text)
+    if match:
+        y, m, d = match.groups()
+        return f"{y}-{int(m):02d}-{int(d):02d}"
+    return datetime.now().strftime("%Y-%m-%d")
 
 # -------------------------------
-# 5. 크롤링 실행
+# 크롤링 함수
 # -------------------------------
 def run_crawling():
+
     start_time = datetime.now()
     collected_count = 0
     status = "SUCCESS"
@@ -76,15 +77,17 @@ def run_crawling():
     print(f"[{start_time}] 크롤링 시작")
 
     driver = make_driver()
+    conn = None
+    cursor = None
 
     try:
         conn = pymysql.connect(**DB_CONFIG)
         cursor = conn.cursor()
 
         for cid, cname in COMPANIES.items():
-            print(f"[{cname}] 검색 시작", flush=True)
+            print(f"[{cname}] 검색 시작")
 
-            driver.get(build_url(cname, 1))
+            driver.get(build_url(cname))
             time.sleep(1)
 
             links = driver.find_elements(By.CSS_SELECTOR, "div.news_list a")
@@ -96,7 +99,6 @@ def run_crawling():
                 and "view.asp" in a.get_attribute("href")
             ]))
 
-            # 최신 10개 기사만 확인
             for link in urls[:10]:
 
                 driver.get(link)
@@ -108,12 +110,11 @@ def run_crawling():
 
                     full_text = title + content
 
-                    # 기업명 + 보안 키워드 필터
                     if cname in full_text and any(k in full_text for k in SECURITY_KEYWORDS):
 
                         try:
                             date_text = driver.find_element(By.ID, "news_util01").text
-                            article_date = date_text.replace("입력 :", "").strip().split()[0]
+                            article_date = parse_date(date_text)
                         except:
                             article_date = datetime.now().strftime("%Y-%m-%d")
 
@@ -141,8 +142,6 @@ def run_crawling():
                     print(f"   기사 처리 실패: {e}")
 
         conn.commit()
-        cursor.close()
-        conn.close()
 
     except Exception as e:
         status = "FAIL"
@@ -151,38 +150,45 @@ def run_crawling():
 
     finally:
         driver.quit()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
     # -------------------------------
-    # 6. crawl_log 기록
+    # crawl_log 기록
     # -------------------------------
     try:
         conn = pymysql.connect(**DB_CONFIG)
         cursor = conn.cursor()
 
-        log_sql = """
-        INSERT INTO crawl_log
-        (crawlTime, crawlingStatus, collectedCount, message)
-        VALUES (%s, %s, %s, %s)
-        """
-
-        cursor.execute(log_sql, (
-            start_time,
-            status,
-            collected_count,
-            message
-        ))
+        cursor.execute("""
+            INSERT INTO crawl_log
+            (crawlTime, crawlingStatus, collectedCount, message)
+            VALUES (%s, %s, %s, %s)
+        """, (start_time, status, collected_count, message))
 
         conn.commit()
-        cursor.close()
-        conn.close()
 
     except Exception as e:
         print(f"[로그 기록 실패] {e}")
 
-    print(f"\n크롤링 종료 - 신규 저장 건수: {collected_count}")
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
+    print(f"크롤링 종료 - 신규 저장 건수: {collected_count}")
+
 
 # -------------------------------
-# 7. 메인 실행
+# 스케줄러 설정
 # -------------------------------
-if __name__ == "__main__":
-    run_crawling()
+schedule.every().day.at("10:00").do(run_crawling)
+
+print("파이썬 스케줄러 시작 (매일 10시 실행)")
+
+while True:
+    schedule.run_pending()
+    time.sleep(30)
