@@ -96,9 +96,9 @@ public class IncidentDao {
         ArrayList<IncidentDto> incidentDtos = new ArrayList<>();
         try{
             String sql = "SELECT i.*, c.companyName, ind.industryName " +
-                "FROM incident i " +
-                "LEFT JOIN company c ON i.companyId = c.companyId " +
-                "LEFT JOIN industry ind ON c.industryId = ind.industryId;";
+                    "FROM incident i " +
+                    "LEFT JOIN company c ON i.companyId = c.companyId " +
+                    "LEFT JOIN industry ind ON c.industryId = ind.industryId;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
@@ -114,7 +114,7 @@ public class IncidentDao {
         } catch (SQLException e) {
             System.out.println("[시스템오류] SQL 문법 문제 발생: "+e);
         }
-            return incidentDtos;
+        return incidentDtos;
     }
 
     // 보안사고수정

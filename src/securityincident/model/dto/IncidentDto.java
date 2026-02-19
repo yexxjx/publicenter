@@ -33,7 +33,6 @@ public class IncidentDto {
     }
 
 
-
     // 조회
     public IncidentDto(long incidentId, String incidentYear, String incidentDate, String incidentType, String incidentDescription, String actionTaken, String approvalStatus, String approvalTime, int companyId) {
         this.incidentId = incidentId;
@@ -56,7 +55,6 @@ public class IncidentDto {
         this.incidentType = incidentType;
         this.incidentDate = incidentDate;
     }
-
     public IncidentDto(int incidentId, String companyName, String industryName, String incidentType, String incidentDate, String approvalStatus) {
         this.incidentId = incidentId;
         this.companyName = companyName;
@@ -65,7 +63,6 @@ public class IncidentDto {
         this.incidentDate = incidentDate;
         this.approvalStatus = approvalStatus;
     }
-
 
     // getter setter - 이한승
     public long getIncidentId() {
