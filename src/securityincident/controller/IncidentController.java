@@ -98,6 +98,11 @@ public class IncidentController {
         return id.incidentFindByType(type);
     }
 
+    // 사고 승인 처리
+    public boolean approveIncident(int incidentId){
+        return id.approveIncident(incidentId);
+    }
+
 
 
 } // class end

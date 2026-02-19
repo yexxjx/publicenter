@@ -34,9 +34,10 @@ public class IncidentDao {
 
     // 1. 보안사고 관리
     // 보안사고 등록 DAO
+    // 보안사고 등록 DAO
     public boolean incidentAddByAdmin(IncidentDto incidentDto){
         try{
-            String sql = "INSERT INTO securityIncident " +
+            String sql = "INSERT INTO incident " +   // ← securityIncident → incident 수정
                     "(incidentYear, incidentType, incidentDescription, actionTaken, companyId) " +
                     "VALUES (?, ?, ?, ?, ?)";
 
@@ -48,15 +49,15 @@ public class IncidentDao {
             ps.setString(4, incidentDto.getActionTaken());
             ps.setInt(5, incidentDto.getCompanyId());
 
-            int result = ps.executeUpdate(); // 1이면 성공, 0이면 실패
+            int result = ps.executeUpdate();
             if(result == 1) return true;
-
 
         }catch (SQLException e){
             e.printStackTrace();
         }
         return false;
     }
+
 
     // 이름 존재하는지 확인
     public int getCompanyIdByName(String companyName) {
@@ -78,7 +79,7 @@ public class IncidentDao {
     // 보안사고 삭제
     public boolean incidentDelete(int incidentId){
         try{
-            String sql ="delete from securityIncident where incidentid=?";
+            String sql ="DELETE FROM incident WHERE incidentId=?";  // ← 수정
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1,incidentId);
 
@@ -90,6 +91,7 @@ public class IncidentDao {
         }
         return false;
     }
+
 
     // * 보안사고 전체 조회
     public ArrayList<IncidentDto> incidentFindAll(){
@@ -152,11 +154,11 @@ public class IncidentDao {
 //
 //    }
 
-    // 보안사고수정
+    // 보안사고 수정
     public boolean incidentUpdate(int incidentId, String incidentYear, String incidentDate,
                                   String incidentType, String incidentDescription, String actionTaken){
         try{
-            String sql = "UPDATE securityIncident SET incidentYear=?, incidentDate=?, incidentType=?, incidentDescription=?, actionTaken=? WHERE incidentId=?";
+            String sql = "UPDATE incident SET incidentYear=?, incidentDate=?, incidentType=?, incidentDescription=?, actionTaken=? WHERE incidentId=?"; // ← 수정
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setString(1, incidentYear);
@@ -182,7 +184,7 @@ public class IncidentDao {
                     "s.incidentType, s.incidentDescription, s.actionTaken, " +
                     "s.approvalStatus, s.approvalTime, s.companyId, " +
                     "c.companyName " +
-                    "FROM securityIncident s " +
+                    "FROM incident s " +
                     "JOIN company c ON s.companyId = c.companyId " +
                     "WHERE s.incidentYear = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -228,7 +230,7 @@ public class IncidentDao {
     public ArrayList<String> getIncidentTypeList(){
         ArrayList<String> list = new ArrayList<>();
         try{
-            String sql = "SELECT DISTINCT incidentType FROM securityIncident";
+            String sql = "SELECT DISTINCT incidentType FROM incident";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
@@ -251,7 +253,7 @@ public class IncidentDao {
                     "s.incidentType, s.incidentDescription, s.actionTaken, " +
                     "s.approvalStatus, s.approvalTime, s.companyId, " +
                     "c.companyName " +
-                    "FROM securityIncident s " +
+                    "FROM incident s " +
                     "JOIN company c ON s.companyId = c.companyId " +
                     "WHERE s.incidentType = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -276,6 +278,23 @@ public class IncidentDao {
             System.out.println("SQL 오류");
         }
         return db;
+    }
+    // 사고 승인 처리
+    public boolean approveIncident(int incidentId){
+        try{
+            String sql = "UPDATE incident SET approvalStatus='승인 완료', approvalTime=NOW() WHERE incidentId=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, incidentId);
+
+            int count = ps.executeUpdate();
+            if(count == 1){
+                return true;
+            }
+
+        }catch(SQLException e){
+            System.out.println("SQL 오류 " + e);
+        }
+        return false;
     }
 
 
