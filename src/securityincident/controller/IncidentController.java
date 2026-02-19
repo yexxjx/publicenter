@@ -2,6 +2,7 @@ package securityincident.controller;
 
 import securityincident.model.dao.CompanyDao;
 import securityincident.model.dao.IncidentDao;
+import securityincident.model.dto.CompanyDto;
 import securityincident.model.dto.IncidentDto;
 
 import java.util.ArrayList;
@@ -49,10 +50,10 @@ public class IncidentController {
         return result;
     }
 
-    // 보안사고조회
+    // * 보안사고 전체 조회
     public ArrayList<IncidentDto> incidentFindAll(){
-        ArrayList<IncidentDto>db = id.incidentFindAll();
-        return db;
+        ArrayList<IncidentDto> incidentDtos = id.incidentFindAll();
+        return incidentDtos;
     }
 
     // 보안사고수정
@@ -72,10 +73,10 @@ public class IncidentController {
     }
 
     //연도별 보안 사고 검색
-     public ArrayList<IncidentDto> incidentFindByYear(String year){
+    public ArrayList<IncidentDto> incidentFindByYear(String year){
         ArrayList<IncidentDto>db = id.incidentFindByYear(year);
         return db;
-     }
+    }
 
     // 유형 목록 가져오기
     public ArrayList<String> getIncidentTypeList(){

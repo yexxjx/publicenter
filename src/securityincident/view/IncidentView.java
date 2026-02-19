@@ -1,10 +1,13 @@
 package securityincident.view;
 
+import securityincident.controller.CompanyController;
 import securityincident.controller.IncidentController;
 import securityincident.model.dao.IncidentDao;
+import securityincident.model.dto.CompanyDto;
 import securityincident.model.dto.IncidentDto;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class IncidentView {
@@ -37,7 +40,7 @@ public class IncidentView {
             else if(ch==2){incidentAddByAdmin();}
             else if(ch==3){incidentUpdate();}
             else if(ch==4){incidentDelete();}
-            else{}
+            else{return;}
         }
     }
     //보안사고등록 view
@@ -80,23 +83,33 @@ public class IncidentView {
 
     }
 
-    //보안사고조회view
+    // * 보안사고 전체 조회
     public void incidentFindAll(){
-        ArrayList<IncidentDto>db = ic.incidentFindAll();
-        for(IncidentDto a : db){
-
-            System.out.printf(
-                    "사고번호: %d, 발생연도: %s, 발생일: %s, 유형: %s, 상세내용: %s, 조치사항: %s, 승인상태: %s, 승인시간: %s, 기업번호: %d \n",
-                    a.getIncidentId(),
-                    a.getIncidentYear(),
-                    a.getIncidentDate(),
-                    a.getIncidentType(),
-                    a.getIncidentDescription(),
-                    a.getActionTaken(),
-                    a.getApprovalStatus(),
-                    a.getApprovalTime(),
-                    a.getCompanyId()
-            );
+        ArrayList<IncidentDto> incidentDto = ic.incidentFindAll();
+        System.out.println("──┤ 전체 보안 사고 목록 ├────────────────────────────────────────────\n");
+        System.out.println(" 사고번호  |   기업명   |  산업군  |       사고유형       |    발생일    |   승인상태");
+        System.out.println("------------------------------------------------------------------------------------\n");
+        for(IncidentDto list : incidentDto){
+            System.out.printf("  %d  |  %s  |  %s  |  %s  |  %s  |  %s   \n",
+            list.getIncidentId(), list.getCompanyName(), list.getIndustryName(), list.getIncidentType(), list.getIncidentDate(), list.getApprovalStatus());
+        }
+        for(;;){
+            try {
+                System.out.println("\n======================== 다음 동작 선택 ========================");
+                System.out.println("1. 사고 상세 정보 조회");
+                System.out.println("2. 이전 메뉴로 돌아가기");
+                System.out.print("선택> ");        int ch = scan.nextInt();
+                if (ch == 1) {}
+                else if (ch == 2) { return;}
+                else {
+                    System.out.println("[경고] 없는 기능 번호입니다.");
+                }
+            }catch (InputMismatchException e){
+                System.out.println("[경고] 잘못된 입력 방식입니다. [재입력]");
+                scan = new Scanner(System.in);
+            }catch (Exception e){
+                System.out.println("[시스템오류] 관리자에게 문의하세요.");
+            }
         }
     }
 
@@ -157,7 +170,7 @@ public class IncidentView {
             if(ch==1){incidentFindByYear();}
             else if(ch==2){}
             else if(ch==3){}
-            else if(ch==4){}
+            else if(ch==4){return;}
 
         }
     }

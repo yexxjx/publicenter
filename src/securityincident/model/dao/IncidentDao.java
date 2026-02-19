@@ -1,5 +1,6 @@
 package securityincident.model.dao;
 
+import securityincident.model.dto.CompanyDto;
 import securityincident.model.dto.IncidentDto;
 
 import java.sql.*;
@@ -15,7 +16,7 @@ public class IncidentDao {
     }
 
     // 데이터 베이스 연동
-    private String url = "jdbc:mysql://localhost:3306/crawlerDB";
+    private String url = "jdbc:mysql://localhost:3306/security_db";
     private String user = "root";
     private String password ="1234";
 
@@ -90,43 +91,30 @@ public class IncidentDao {
         return false;
     }
 
-    //보안사고 조회
+    // * 보안사고 전체 조회
     public ArrayList<IncidentDto> incidentFindAll(){
-        ArrayList<IncidentDto>db = new ArrayList<>();
+        ArrayList<IncidentDto> incidentDtos = new ArrayList<>();
         try{
-            String sql ="select*from securityIncident";
+            String sql = "SELECT i.*, c.companyName, ind.industryName " +
+                "FROM incident i " +
+                "LEFT JOIN company c ON i.companyId = c.companyId " +
+                "LEFT JOIN industry ind ON c.industryId = ind.industryId;";
             PreparedStatement ps = conn.prepareStatement(sql);
-
             ResultSet rs = ps.executeQuery();
-
             while(rs.next()){
-                long incidentId = rs.getLong("incidentId");
-                String incidentYear = rs.getString("incidentYear");
-                String incidentDate = rs.getString("incidentDate");
+                int incidentId = rs.getInt("incidentId");
+                String companyName = rs.getString("companyName");
+                String industryName = rs.getString("industryName");
                 String incidentType = rs.getString("incidentType");
-                String incidentDescription = rs.getString("incidentDescription");
-                String actionTaken = rs.getString("actionTaken");
+                String incidentDate = rs.getString("incidentDate");
                 String approvalStatus = rs.getString("approvalStatus");
-                String approvalTime = rs.getString("approvalTime");
-                int companyId = rs.getInt("companyId");
-
-                IncidentDto incidentDto = new IncidentDto(
-                        incidentId,
-                        incidentYear,
-                        incidentDate,
-                        incidentType,
-                        incidentDescription,
-                        actionTaken,
-                        approvalStatus,
-                        approvalTime,
-                        companyId
-                );
-                db.add(incidentDto);
+                IncidentDto incidentDto = new IncidentDto(incidentId, companyName, industryName, incidentType, incidentDate, approvalStatus);
+                incidentDtos.add(incidentDto);
             }
-        }catch (SQLException e){
-            System.out.println("sql 문법 오류"+e);
+        } catch (SQLException e) {
+            System.out.println("[시스템오류] SQL 문법 문제 발생: "+e);
         }
-        return db;
+            return incidentDtos;
     }
 
     // 보안사고수정
