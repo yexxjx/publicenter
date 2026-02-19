@@ -15,7 +15,7 @@ public class IncidentDto {
     private String companyName;
     private String industryName;
 
-    // 기본 생성자 - 이한승
+    // 기본 생성자
     public IncidentDto(){}
 
     // 전체 생성자
