@@ -65,7 +65,7 @@ public class SampleCrawler { //샘플 크롤러 클래스
 
             if (conn != null) {                 //DB 연결이 이미 생성된 상태라면
                 try {                           //로그 저장 중 에러가 나도 프로그램 죽지 않게 한 번 더 try
-                       new CrawlingDao(conn).insertCrawlingLog(    //실패 로그 저장 시도
+                    new CrawlingDao(conn).insertCrawlingLog(    //실패 로그 저장 시도
                             new CrawlingLogDto(
                                     "FAIL",
                                     savedCount,
