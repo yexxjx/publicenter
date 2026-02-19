@@ -64,6 +64,17 @@ public class IncidentDto {
         this.approvalStatus = approvalStatus;
     }
 
+    public IncidentDto(int incidentId, String companyName, String industryName, String incidentType, String incidentDate, String approvalStatus, String incidentDescription, String actionTaken) {
+        this.incidentId = incidentId;
+        this.companyName = companyName;
+        this.industryName = industryName;
+        this.incidentType = incidentType;
+        this.incidentDate = incidentDate;
+        this.approvalStatus = approvalStatus;
+        this.incidentDescription = incidentDescription;
+        this.actionTaken = actionTaken;
+    }
+
     // getter setter - 이한승
     public long getIncidentId() {
         return incidentId;
@@ -152,4 +163,5 @@ public class IncidentDto {
     public void setIndustryName(String industryName) {
         this.industryName = industryName;
     }
+
 }

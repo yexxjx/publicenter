@@ -117,6 +117,41 @@ public class IncidentDao {
         return incidentDtos;
     }
 
+    // * 사고 상세 정보 조회
+    public ArrayList<IncidentDto> incidentFindOne(int incidentId){
+        ArrayList<IncidentDto> incidentDtos = new ArrayList<>();
+        try {
+            String sql = "SELECT i.*, c.companyName, ind.industryName " +
+                    "FROM incident i " +
+                    "INNER JOIN company c ON i.companyId = c.companyId " +
+                    "INNER JOIN industry ind ON c.industryId = ind.industryId " +
+                    "WHERE i.incidentId = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1,incidentId);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                int rsId = rs.getInt("incidentId");
+                String companyName = rs.getString("companyName");
+                String industryName = rs.getString("industryName");
+                String incidentType = rs.getString("incidentType");
+                String incidentDate = rs.getString("incidentDate");
+                String approvalStatus = rs.getString("approvalStatus");
+                String incidentDescription = rs.getString("incidentDescription");
+                String actionTaken = rs.getString("actionTaken");
+                IncidentDto dto = new IncidentDto(rsId, companyName, industryName, incidentType, incidentDate, approvalStatus, incidentDescription, actionTaken);
+                incidentDtos.add(dto);
+            }
+        } catch (SQLException e) {
+            System.out.println("[시스템오류] SQL 문법 문제 발생: "+e);
+        }
+        return incidentDtos;
+    }
+
+    // * 기업별 보안 사고 조회
+//    public ArrayList<IncidentDto> incidentFindByCompany(String companyName){
+//
+//    }
+
     // 보안사고수정
     public boolean incidentUpdate(int incidentId, String incidentYear, String incidentDate,
                                   String incidentType, String incidentDescription, String actionTaken){

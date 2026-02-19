@@ -12,6 +12,7 @@ public class AdminView {
 
     private AdminController ac;
     private CompanyView cv;
+    private IncidentView icv;
 
     Scanner scan = new Scanner(System.in);
 
@@ -43,6 +44,7 @@ public class AdminView {
     public void adminMenu(){ //메소드명 안 정해서 임의지정함
         if(ac == null) {ac = AdminController.getInstance();}
         if(cv == null) {cv = CompanyView.getInstance();}
+        if(icv == null) {icv = IncidentView.getInstance();}
         for(;;){
             try{
                 System.out.println("──┤ 관리자 메뉴 ├─────────────────────────────────────────");
@@ -53,7 +55,7 @@ public class AdminView {
                 System.out.println("5. 로그아웃\n");
                 System.out.print("선택 > ");      int ch = scan.nextInt();
                 if (ch == 1) {cv.index();}
-                else if (ch == 2) {}
+                else if (ch == 2) {icv.incidentMenu();}
                 else if (ch == 3) {}
                 else if (ch == 4) {}
                 else if (ch == 5) {adminLogout(); return;}
