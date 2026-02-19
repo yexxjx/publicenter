@@ -20,6 +20,7 @@ public class MainView {
     public void index(){
         if(cv == null) {cv = CompanyView.getInstance();}
         if(av == null) {av = AdminView.getInstance();}
+        if(iv == null) {iv = IndustryView.getInstance();}
         for(;;){
             try {
                 System.out.println("──┤ \uD83C\uDF1F\uD83D\uDD10 publiccenter Console \uD83D\uDD10\uD83C\uDF1F ├───────────────────────────────────");
@@ -28,7 +29,7 @@ public class MainView {
                 int ch = scan.nextInt();
                 scan.nextLine();
                 if (ch == 1) {companyIndex();}
-                else if (ch == 2) { }
+                else if (ch == 2) {iv.index(); }
                 else if (ch == 3) {IncidentView.getInstance().SearchView(); }
                 else if (ch == 4) {IncidentView.getInstance().statView(); }
                 else if (ch == 5) { av.adminLogin();}
@@ -48,6 +49,7 @@ public class MainView {
     // 1. 기업 정보 조회 페이지
     public void companyIndex(){
         if(cv == null) {cv = CompanyView.getInstance();}
+        if(iv == null) {iv = IndustryView.getInstance();}
         for(;;){
             try {
                 System.out.println("──┤ 기업 정보 조회 ├────────────────────────────────────────────────\n");
@@ -57,15 +59,15 @@ public class MainView {
                 scan.nextLine();
                 if (ch == 1) {cv.companyFindAll();}
                 else if (ch == 2) {iv.index();}
-                else if (ch == 3) { }
-                else if (ch == 4) { }
+                else if (ch == 3) {cv.companyFindOne();}
+                else if (ch == 4) {return;}
                 else {
                     System.out.println("[경고] 없는 기능 번호입니다.");
                 }
             }catch (InputMismatchException e){
                 System.out.println("[경고] 잘못된 입력 방식입니다. [재입력]");
-                scan.nextLine();
-            }catch (Exception e){
+                scan.nextLine(); // 입력 객체 초기화 (잘못된 입력값 제거)
+            }catch (Exception e){ // Exception은 예외 중 슈퍼클래스로 모든 예외 처리가 가능하다.
                 System.out.println("[시스템오류] 관리자에게 문의하세요.");
             }
         }//for end
