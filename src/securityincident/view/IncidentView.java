@@ -37,7 +37,7 @@ public class IncidentView {
             else if(ch==2){incidentAddByAdmin();}
             else if(ch==3){incidentUpdate();}
             else if(ch==4){incidentDelete();}
-            else{}
+            else{return;}
         }
     }
     //보안사고등록 view
@@ -155,9 +155,9 @@ public class IncidentView {
             System.out.print("선택 > "); int ch = scan.nextInt(); scan.nextLine();
 
             if(ch==1){incidentFindByYear();}
-            else if(ch==2){}
-            else if(ch==3){}
-            else if(ch==4){}
+            else if(ch==2){incidentFindByType();}
+            else if(ch==3){incidentFindByIndustry();}
+            else if(ch==4){return;}
 
         }
     }
@@ -172,7 +172,7 @@ public class IncidentView {
             ArrayList<IncidentDto> db = ic.incidentFindByYear(year);
 
             if (db.isEmpty()) {
-                System.out.println("❌ 해당 연도(" + year + ")에 등록된 사고 내역이 없습니다.");
+                System.out.println("해당 연도(" + year + ")에 등록된 사고 내역이 없습니다.");
                 continue;
             } else {
                 System.out.println("사고번호 |   기업명   |   사고유형   |   발생일");
@@ -195,9 +195,10 @@ public class IncidentView {
                 System.out.print("사고번호 입력 > ");
                 int id = scan.nextInt();
                 scan.nextLine();
-
+                boolean found = false;
                 for (IncidentDto a : db) {
                     if (a.getIncidentId() == id) {
+                        found = true;
                         System.out.println("=== 사고 상세 정보 ===");
                         System.out.println("사고번호  : " + a.getIncidentId());
                         System.out.println("기업명    : " + a.getCompanyName());
@@ -210,6 +211,10 @@ public class IncidentView {
                         break;
                     }
                 } //  for end
+                if(found==false){
+                    System.out.println("❌ 목록에 없는 사고번호입니다.");
+                    continue;
+                }
                 System.out.println("======================== 다음 동작 선택 ========================");
                 System.out.println("1. 다른 연도 검색");
                 System.out.println("2. 이전 메뉴로 돌아가기");
@@ -258,7 +263,7 @@ public class IncidentView {
                 System.out.printf("  %d  |  %s  |  %s  \n",
                         a.getIncidentId(), a.getCompanyName(), a.getIncidentDate());
             }
-
+            System.out.println("======================== 다음 동작 선택 ========================");
             System.out.println("1. 사고 상세 정보 조회");
             System.out.println("2. 다른 유형 검색");
             System.out.println("3. 이전 메뉴로 돌아가기");
@@ -268,9 +273,10 @@ public class IncidentView {
             if(ch2 == 1){
                 System.out.print("사고번호 입력 > ");
                 int id = scan.nextInt(); scan.nextLine();
-
+                boolean found = false;
                 for(IncidentDto a : db){
                     if(a.getIncidentId() == id){
+                        found=true;
                         System.out.println("=== 사고 상세 정보 ===");
                         System.out.println("사고번호  : " + a.getIncidentId());
                         System.out.println("기업명    : " + a.getCompanyName());
@@ -283,6 +289,10 @@ public class IncidentView {
                         break;
                     }
                 }
+                if(found==false){
+                    System.out.println("❌ 목록에 없는 사고번호입니다.");
+                    continue;
+                }
             }
             else if(ch2 == 2){ continue; }
             else if(ch2 == 3){ return; }
@@ -290,11 +300,128 @@ public class IncidentView {
     }
 
     //산업군별 보안 사고 검색
+    public void incidentFindByIndustry(){
+        while(true){
+            System.out.println("──┤ 사고 유형별 검색 ├──────────────────────────────────────");
+            System.out.println();
+            ArrayList<String>list=ic.getIndustryList();
+            for(int i = 0; i < list.size(); i++){
+                System.out.println((i+1) + ". " + list.get(i));
+            }
 
+            System.out.print("선택> ");
+            int ch = scan.nextInt(); scan.nextLine();
+
+            if(ch < 1 || ch > list.size()){
+                System.out.println("잘못된 선택입니다.");
+                continue;
+            }
+            String industry = list.get(ch - 1);
+            ArrayList<IncidentDto> db = ic.incidentFindByIndustry(industry);
+
+            if(db.isEmpty()){
+                System.out.println("해당 유형의 사고 내역이 없습니다.");
+                continue;
+            }
+
+            System.out.println("사고번호 | 기업명 | 사고유형 | 발생일");
+            System.out.println("------------------------------------");
+            for(IncidentDto a : db){
+                System.out.printf("  %d  |  %s  |  %s |  %s  \n",
+                        a.getIncidentId(), a.getCompanyName(),a.getIncidentType(), a.getIncidentDate());
+            }
+
+            System.out.println("======================== 다음 동작 선택 ========================");
+            System.out.println("1. 사고 상세 정보 조회");
+            System.out.println("2. 다른 유형 검색");
+            System.out.println("3. 이전 메뉴로 돌아가기");
+            System.out.print("선택> ");
+            int ch2 = scan.nextInt(); scan.nextLine();
+
+            if(ch2==1){
+                System.out.print("사고번호 입력 > ");
+                int id = scan.nextInt(); scan.nextLine();
+                boolean found = false;
+                for(IncidentDto a : db){
+                    if(a.getIncidentId() == id){
+                        found=true;
+                        System.out.println("=== 사고 상세 정보 ===");
+                        System.out.println("사고번호  : " + a.getIncidentId());
+                        System.out.println("기업명    : " + a.getCompanyName());
+                        System.out.println("발생연도  : " + a.getIncidentYear());
+                        System.out.println("발생일    : " + a.getIncidentDate());
+                        System.out.println("사고유형  : " + a.getIncidentType());
+                        System.out.println("사고내용  : " + a.getIncidentDescription());
+                        System.out.println("조치사항  : " + a.getActionTaken());
+                        System.out.println("승인상태  : " + a.getApprovalStatus());
+                        break;
+                    }
+                }
+                if(found==false){
+                    System.out.println("❌ 목록에 없는 사고번호입니다.");
+                    continue;
+                }
+            }
+            else if (ch2==2){continue;}
+            else if (ch2==3){return;}
+
+        }
+    } // m end
 
     // 통계
+    public void statView() {
+        while (true) {
+            System.out.println("──┤ 통계 보기 ├──────────────────────────────────────");
+            System.out.println("1. 기업별 보안 사고 건수");
+            System.out.println("2. 연도별 보안 사고 발생 건수");
+            System.out.println("3. 사고 유형별 통계");
+            System.out.println("4. 이전 메뉴로 돌아가기");
+            System.out.print("선택> ");
+            int ch = scan.nextInt();
+            scan.nextLine();
+
+            if (ch == 1) {
+                System.out.println("──┤ 기업별 보안 사고 건수 ├──────────────────────────────────────");
+                System.out.println("기업명 | 사고 건수");
+                System.out.println("------------------------------------");
+                for (String s : ic.statByCompany()) {
+                    System.out.println(s);
+                }
+            } else if (ch == 2) {
+                System.out.println("──┤ 연도별 보안 사고 발생 건수 ├──────────────────────────────────────");
+                System.out.println("연도 | 사고 건수");
+                System.out.println("------------------------------------");
+                for (String s : ic.statByYear()) {
+                    System.out.println(s);
+                }
+            } else if (ch == 3) {
+                System.out.println("──┤ 사고 유형별 통계 ├──────────────────────────────────────");
+                System.out.println("사고 유형 | 발생 건수");
+                System.out.println("------------------------------------");
+                for (String s : ic.statByType()) {
+                    System.out.println(s);
+                }
+            } else if (ch == 4) {
+                return;
+            }
+
+            if (ch >= 1 && ch <= 3) {
+                System.out.println("======================== 다음 동작 선택 ========================");
+                System.out.println("1. 이전 메뉴로 돌아가기");
+                System.out.println("2. 메인 메뉴로 돌아가기");
+                System.out.print("선택> ");
+                int ch2 = scan.nextInt();
+                scan.nextLine();
+                if (ch2 == 1) {
+                    continue;
+                } else if (ch2 == 2) {
+                    return;
+                } // index로 돌아감
+            }
+        }
+    }
 
 
 
 
-}//class end
+    }//class end

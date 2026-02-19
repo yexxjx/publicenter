@@ -29,8 +29,8 @@ public class MainView {
                 scan.nextLine();
                 if (ch == 1) {companyIndex();}
                 else if (ch == 2) { }
-                else if (ch == 3) { }
-                else if (ch == 4) { }
+                else if (ch == 3) {IncidentView.getInstance().SearchView(); }
+                else if (ch == 4) {IncidentView.getInstance().statView(); }
                 else if (ch == 5) { av.adminLogin();}
                 else if (ch == 6) { programEnd();}
                 else {

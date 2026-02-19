@@ -27,7 +27,7 @@ public class IncidentDao {
             conn = DriverManager.getConnection(url,user,password);
             System.out.println("데이터베이스 연동 성공");
         }catch (Exception e){
-            System.out.println("데이터베이스 연동 실패");
+            System.out.println("데이터베이스 연동 실패");e.printStackTrace();
         }
     }
 
@@ -255,15 +255,101 @@ public class IncidentDao {
         return db;
     }
 
-
-
-
-
-
-
+    // 산업군 목록
+    public ArrayList<String> getIndustryList(){
+        ArrayList<String> list = new ArrayList<>();
+        try{
+            String sql = "SELECT DISTINCT industryName FROM industry";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                list.add(rs.getString("industryName"));
+            }
+        }catch(SQLException e){
+            System.out.println("SQL 오류");
+        }
+        return list;
+    }
 
     // 산업군별 검색
+    public ArrayList<IncidentDto> incidentFindByIndustry(String industryName){
+        ArrayList<IncidentDto> db = new ArrayList<>();
+        try{
+            String sql = "SELECT s.incidentId, s.incidentYear, s.incidentDate, " +
+                    "s.incidentType, s.incidentDescription, s.actionTaken, " +
+                    "s.approvalStatus, s.approvalTime, s.companyId, c.companyName " +
+                    "FROM securityIncident s " +
+                    "JOIN company c ON s.companyId = c.companyId " +
+                    "JOIN industry i ON c.industryId = i.industryId " +
+                    "WHERE i.industryName = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, industryName);
+            ResultSet rs = ps.executeQuery();
 
+            while(rs.next()){
+                db.add(new IncidentDto(
+                        rs.getLong("incidentId"),
+                        rs.getString("incidentYear"),
+                        rs.getString("incidentDate"),
+                        rs.getString("incidentType"),
+                        rs.getString("incidentDescription"),
+                        rs.getString("actionTaken"),
+                        rs.getString("approvalStatus"),
+                        rs.getString("approvalTime"),
+                        rs.getInt("companyId"),
+                        rs.getString("companyName")
+                ));
+            }
+        }catch(SQLException e){
+            System.out.println("SQL 오류");
+        }
+        return db;
+    }
+    // 기업별 사고 건수
+    public ArrayList<String> statByCompany(){
+        ArrayList<String> list = new ArrayList<>();
+        try{
+            String sql = "SELECT c.companyName, COUNT(s.incidentId) AS cnt " +
+                    "FROM securityIncident s " +
+                    "JOIN company c ON s.companyId = c.companyId " +
+                    "GROUP BY c.companyName";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                list.add(rs.getString("companyName") + " : " + rs.getInt("cnt") + "건");
+            }
+        }catch(SQLException e){ System.out.println("SQL 오류"); }
+        return list;
+    }
 
+    // 연도별 사고 건수
+    public ArrayList<String> statByYear(){
+        ArrayList<String> list = new ArrayList<>();
+        try{
+            String sql = "SELECT incidentYear, COUNT(incidentId) AS cnt " +
+                    "FROM securityIncident GROUP BY incidentYear ORDER BY incidentYear";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                list.add(rs.getString("incidentYear") + "년 : " + rs.getInt("cnt") + "건");
+            }
+        }catch(SQLException e){ System.out.println("SQL 오류"); }
+        return list;
+    }
+
+    // 유형별 사고 건수
+    public ArrayList<String> statByType(){
+        ArrayList<String> list = new ArrayList<>();
+        try{
+            String sql = "SELECT incidentType, COUNT(incidentId) AS cnt " +
+                    "FROM securityIncident GROUP BY incidentType";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                list.add(rs.getString("incidentType") + " : " + rs.getInt("cnt") + "건");
+            }
+        }catch(SQLException e){ System.out.println("SQL 오류"); }
+        return list;
+    }
 
 }// class end

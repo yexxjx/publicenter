@@ -87,6 +87,29 @@ public class IncidentController {
         return id.incidentFindByType(type);
     }
 
+    // 산업군 목록
+    public ArrayList<String> getIndustryList(){
+        return id.getIndustryList();
+    }
 
+    // 산업군 검색
+    public ArrayList<IncidentDto> incidentFindByIndustry(String industryName){
+        return id.incidentFindByIndustry(industryName);
+    }
+
+    // 기업별 사고 건수
+    public ArrayList<String> statByCompany(){
+        return id.statByCompany();
+    }
+
+    // 연도별 사고 건수
+    public ArrayList<String> statByYear(){
+        return id.statByYear();
+    }
+
+    // 유형별 사고 건수
+    public ArrayList<String> statByType(){
+        return id.statByType();
+    }
 
 } // class end
