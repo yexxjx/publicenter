@@ -95,6 +95,29 @@ public class IncidentController {
         return id.incidentFindByType(type);
     }
 
+    // 사고 승인 처리
+    public boolean approveIncident(int incidentId){
+        return id.approveIncident(incidentId);
+    }
+
+    // 승인 대기 사고 목록 조회
+    public ArrayList<IncidentDto> findPendingIncidents(){
+        return id.findPendingIncidents();
+    }
+    // 자동 사고 등록 (크롤링 감지용)
+    public boolean autoInsertIncident(String incidentYear,
+                                      String incidentType,
+                                      String description,
+                                      int companyId){
+
+        return id.autoInsertIncident(
+                incidentYear,
+                incidentType,
+                description,
+                companyId
+        );
+    }
+
 
 
 } // class end
