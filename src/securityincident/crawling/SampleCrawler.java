@@ -5,8 +5,9 @@ import org.openqa.selenium.WebDriver; //WebDriver : 브라우저 제어 인터�
 import org.openqa.selenium.WebElement; // WebElement : 화면에 있는 HTML 요소 하나
 import org.openqa.selenium.chrome.ChromeDriver; //ChromDriver : 크롬 브라우저 구현체
 
-import securityincident.model.dao.CrawlDao; //DB에 기사/크롤링 로그 저장을 담당하는 DAO
+import securityincident.model.dao.CrawlingDao; //DB에 기사/크롤링 로그 저장을 담당하는 DAO
 import securityincident.model.dto.ArticleDto; // ArticleDto : 뉴스 기사 1건
+import securityincident.model.dto.CrawlingDto; // CrawlingLogDto : 크롤링 실행 로그 1건
 import securityincident.util.DBUtil; // DB 연결을 생성해주는 유틸 클래스
 
 import java.sql.Connection; //connction : JDBC DB 연결 객체

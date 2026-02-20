@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS company (
     foundedYear INT,
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     industryId INT NOT NULL,
-    CONSTRAINT fk_company_industry FOREIGN KEY (industryId) REFERENCES industry(industryId)
+    CONSTRAINT fk_company_industry FOREIGN KEY (industryId) REFERENCES industry(industryId) on update cascade on delete cascade
 );
 
 INSERT IGNORE INTO company (companyId, companyName, headOffice, foundedYear, industryId) VALUES 
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS incident (
     approvalStatus VARCHAR(10),
     approvalTime DATETIME,
     companyId INT NOT NULL,
-    CONSTRAINT fk_incident_company FOREIGN KEY (companyId) REFERENCES company(companyId)
+    CONSTRAINT fk_incident_company FOREIGN KEY (companyId) REFERENCES company(companyId) on update cascade on delete cascade
 );
 
 INSERT IGNORE INTO incident (incidentId, incidentYear, incidentDate, incidentType, approvalStatus, companyId) VALUES 
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS article (
     articleDate DATE,
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     articleUrl VARCHAR(500) UNIQUE,
-    CONSTRAINT fk_article_company FOREIGN KEY (companyId) REFERENCES company(companyId)
+    CONSTRAINT fk_article_company FOREIGN KEY (companyId) REFERENCES company(companyId) on update cascade on delete cascade
 );
 
 -- 7. 크롤링 기사 샘플 데이터
