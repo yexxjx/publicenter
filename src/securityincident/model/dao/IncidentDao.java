@@ -149,7 +149,27 @@ public class IncidentDao {
 
     // * 기업별 보안 사고 조회
     public ArrayList<IncidentDto> incidentFindByCompany(String companyName){
-
+        ArrayList<IncidentDto> incidentDtos = new ArrayList<>();
+        try {
+            String sql = "SELECT i.*, c.companyName, ind.industryName " +
+                    "FROM incident i " +
+                    "INNER JOIN company c ON i.companyId = c.companyId " +
+                    "INNER JOIN industry ind ON c.industryId = ind.industryId " +
+                    "WHERE c.companyName = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, companyName.trim());
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                int incidentId = rs.getInt("incidentId");
+                String incidentType = rs.getString("incidentType");
+                String incidentDate = rs.getString("incidentDate");
+                IncidentDto dto = new IncidentDto(incidentId, incidentType, incidentDate);
+                incidentDtos.add(dto);
+            }
+        } catch (SQLException e) {
+            System.out.println("[시스템오류] SQL 문법 문제 발생: "+e);
+        }
+        return incidentDtos;
     }
 
     // 보안사고수정
@@ -191,7 +211,7 @@ public class IncidentDao {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                long incidentId = rs.getLong("incidentId");
+                int incidentId = rs.getInt("incidentId");
                 String incidentYear = rs.getString("incidentYear");
                 String incidentDate = rs.getString("incidentDate");
                 String incidentType = rs.getString("incidentType");
@@ -260,7 +280,7 @@ public class IncidentDao {
 
             while(rs.next()){
                 db.add(new IncidentDto(
-                        rs.getLong("incidentId"),
+                        rs.getInt("incidentId"),
                         rs.getString("incidentYear"),
                         rs.getString("incidentDate"),
                         rs.getString("incidentType"),

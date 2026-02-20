@@ -1,6 +1,5 @@
 package securityincident.controller;
 
-import securityincident.model.dao.CompanyDao;
 import securityincident.model.dao.IncidentDao;
 import securityincident.model.dto.IncidentDto;
 
@@ -45,8 +44,6 @@ public class IncidentController {
         return result;
     }
 
-
-
     // * 보안사고 전체 조회
     public ArrayList<IncidentDto> incidentFindAll(){
         ArrayList<IncidentDto> incidentDtos = id.incidentFindAll();
@@ -55,7 +52,7 @@ public class IncidentController {
 
     // * 기업별 보안 사고 조회
     public ArrayList<IncidentDto> incidentFindByCompany(String companyName){
-        ArrayList<IncidentDto> incidentDtos = id.incidentFindByCompany();
+        ArrayList<IncidentDto> incidentDtos = id.incidentFindByCompany(companyName);
         return incidentDtos;
     }
 

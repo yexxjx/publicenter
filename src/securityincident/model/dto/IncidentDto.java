@@ -3,7 +3,7 @@ package securityincident.model.dto;
 public class IncidentDto {
 
     // 멤버변수 - 이한승
-    private long incidentId;
+    private int incidentId;
     private String incidentYear;
     private String incidentDate;
     private String incidentType;
@@ -19,7 +19,7 @@ public class IncidentDto {
     public IncidentDto(){}
 
     // 전체 생성자
-    public IncidentDto(long incidentId, String incidentYear, String incidentDate, String incidentType, String incidentDescription, String actionTaken, String approvalStatus, String approvalTime, int companyId, String companyName) {
+    public IncidentDto(int incidentId, String incidentYear, String incidentDate, String incidentType, String incidentDescription, String actionTaken, String approvalStatus, String approvalTime, int companyId, String companyName) {
         this.incidentId = incidentId;
         this.incidentYear = incidentYear;
         this.incidentDate = incidentDate;
@@ -34,7 +34,7 @@ public class IncidentDto {
 
 
     // 조회
-    public IncidentDto(long incidentId, String incidentYear, String incidentDate, String incidentType, String incidentDescription, String actionTaken, String approvalStatus, String approvalTime, int companyId) {
+    public IncidentDto(int incidentId, String incidentYear, String incidentDate, String incidentType, String incidentDescription, String actionTaken, String approvalStatus, String approvalTime, int companyId) {
         this.incidentId = incidentId;
         this.incidentYear = incidentYear;
         this.incidentDate = incidentDate;
@@ -64,6 +64,7 @@ public class IncidentDto {
         this.approvalStatus = approvalStatus;
     }
 
+
     public IncidentDto(int incidentId, String companyName, String industryName, String incidentType, String incidentDate, String approvalStatus, String incidentDescription, String actionTaken) {
         this.incidentId = incidentId;
         this.companyName = companyName;
@@ -75,12 +76,18 @@ public class IncidentDto {
         this.actionTaken = actionTaken;
     }
 
+    public IncidentDto(int incidentId, String incidentType, String incidentDate) {
+        this.incidentId = incidentId;
+        this.incidentType = incidentType;
+        this.incidentDate = incidentDate;
+    }
+
     // getter setter - 이한승
-    public long getIncidentId() {
+    public int getIncidentId() {
         return incidentId;
     }
 
-    public void setIncidentId(long incidentId) {
+    public void setIncidentId(int incidentId) {
         this.incidentId = incidentId;
     }
 

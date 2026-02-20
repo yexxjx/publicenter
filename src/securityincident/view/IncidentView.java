@@ -186,13 +186,13 @@ public class IncidentView {
 
     // * 기업별 보안 사고 조회
     public void incidentFindByCompany(){
+        scan.nextLine();
         for(;;){
             try{
-                scan.nextLine();
                 System.out.println("──┤ 기업별 보안 사고 조회 ├──────────────────────────────────────────\n");
-                System.out.print("기업명 입력 >");        String companyName = scan.nextLine();
+                System.out.print("기업명 입력 > ");        String companyName = scan.nextLine();
                 ArrayList<IncidentDto> incidentDtos = ic.incidentFindByCompany(companyName);
-                System.out.println("\n사고번호 | 사고유형        | 발생일");
+                System.out.println("\n사고번호 |    사고유형    | 발생일");
                 System.out.println("----------------------------------");
                 for(IncidentDto list : incidentDtos) {
                     System.out.printf(" %d | %s | %s\n", list.getIncidentId(), list.getIncidentType(), list.getIncidentDate());
@@ -201,7 +201,7 @@ public class IncidentView {
                 System.out.println("1. 사고 상세 정보 조회");
                 System.out.println("2. 다른 기업 검색");
                 System.out.println("3. 이전 메뉴로 돌아가기");
-                System.out.print("선택 > ");        int ch = scan.nextInt();
+                System.out.print("선택 > ");        int ch = scan.nextInt();                scan.nextLine();
                 if(ch==1){incidentFindOne();}
                 else if(ch==2){continue;}
                 else if(ch==3){return;}
@@ -262,7 +262,7 @@ public class IncidentView {
             if(ch==1){incidentFindByYear();}
             else if(ch==2){}
             else if(ch==3){}
-            else if(ch==4){}
+            else if(ch==4){return;}
 
         }
     }
