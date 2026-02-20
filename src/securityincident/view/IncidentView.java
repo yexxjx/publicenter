@@ -23,7 +23,7 @@ public class IncidentView {
 
 
     //1. 보안사고관리
-    public void incidentMenu(){
+    public void incidentFindMenu(){
         for(;;){
             System.out.println("──┤ 보안 사고 관리 ├──────────────────────────────────────");
             System.out.println("1. 사고 목록 조회");
