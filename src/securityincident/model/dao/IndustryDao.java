@@ -22,7 +22,7 @@ public class IndustryDao {
         }
     }
 
-    private String url = "jdbc:mysql://localhost:3306/crawlerDB";
+    private String url = "jdbc:mysql://localhost:3306/security_db";
     private String user = "root";
     private String password = "1234";
     private Connection conn;

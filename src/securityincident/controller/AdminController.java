@@ -1,32 +1,48 @@
 package securityincident.controller;
 
 import securityincident.model.dao.AdminDao;
+import securityincident.model.dao.IncidentDao;
+import securityincident.model.dao.CrawlDao;
 
 public class AdminController {
-    private AdminController(){}
-    private static final AdminController instance = new AdminController();
-    public static AdminController getInstance(){return instance;}
+
+    private static AdminController instance = new AdminController();
+    private int loginSession = 0;
 
     private AdminDao ad = AdminDao.getInstance();
+    private IncidentDao id = IncidentDao.getInstance();
+    private CrawlDao cd = CrawlDao.getInstance();
 
-    // +) 관리자 로그인 세션
-    private int loginSession = 0;
+    private AdminController(){}
+
+    public static AdminController getInstance(){
+        return instance;
+    }
+
+    // 관리자 로그인
+    public boolean adminLogin(String pw){
+        if(ad.adminLogin(pw)){
+            loginSession = 1;
+            return true;
+        }
+        return false;
+    }
+
     public int getLoinSession(){
         return loginSession;
     }
 
-    // 1. 관리자 로그인
-    public boolean adminLogin(String pw){
-        boolean result = ad.adminLogin(pw);
-        if(result) {
-            this.loginSession = 1;
-        }
-        return result;
+    public void adminLogout(){
+        loginSession = 0;
     }
 
-    // 2. 관리자 로그아웃
-    public boolean adminLogout(){
-        loginSession = 0;
-        return true;
+    // 사고 승인 처리
+    public boolean approveIncident(int incidentId){
+        return id.approveIncident(incidentId);
+    }
+
+    // 크롤링 상태 업데이트
+    public boolean updateCrawling(int crawId, String status, int count, String message){
+        return cd.updateCrawlLog(crawId, status, count, message);
     }
 }

@@ -37,7 +37,7 @@ public class IncidentView {
             else if(ch==2){incidentAddByAdmin();}
             else if(ch==3){incidentUpdate();}
             else if(ch==4){incidentDelete();}
-            else{return;}
+            else{}
         }
     }
     //보안사고등록 view
@@ -155,9 +155,9 @@ public class IncidentView {
             System.out.print("선택 > "); int ch = scan.nextInt(); scan.nextLine();
 
             if(ch==1){incidentFindByYear();}
-            else if(ch==2){incidentFindByType();}
-            else if(ch==3){incidentFindByIndustry();}
-            else if(ch==4){return;}
+            else if(ch==2){}
+            else if(ch==3){}
+            else if(ch==4){}
 
         }
     }
@@ -172,7 +172,7 @@ public class IncidentView {
             ArrayList<IncidentDto> db = ic.incidentFindByYear(year);
 
             if (db.isEmpty()) {
-                System.out.println("해당 연도(" + year + ")에 등록된 사고 내역이 없습니다.");
+                System.out.println("❌ 해당 연도(" + year + ")에 등록된 사고 내역이 없습니다.");
                 continue;
             } else {
                 System.out.println("사고번호 |   기업명   |   사고유형   |   발생일");
@@ -263,7 +263,7 @@ public class IncidentView {
                 System.out.printf("  %d  |  %s  |  %s  \n",
                         a.getIncidentId(), a.getCompanyName(), a.getIncidentDate());
             }
-            System.out.println("======================== 다음 동작 선택 ========================");
+
             System.out.println("1. 사고 상세 정보 조회");
             System.out.println("2. 다른 유형 검색");
             System.out.println("3. 이전 메뉴로 돌아가기");

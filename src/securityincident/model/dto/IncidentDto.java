@@ -13,6 +13,7 @@ public class IncidentDto {
     private String approvalTime;
     private int companyId;
     private String companyName;
+    private String industryName;
 
     // 기본 생성자
     public IncidentDto(){}
@@ -54,9 +55,25 @@ public class IncidentDto {
         this.incidentType = incidentType;
         this.incidentDate = incidentDate;
     }
+    public IncidentDto(int incidentId, String companyName, String industryName, String incidentType, String incidentDate, String approvalStatus) {
+        this.incidentId = incidentId;
+        this.companyName = companyName;
+        this.industryName = industryName;
+        this.incidentType = incidentType;
+        this.incidentDate = incidentDate;
+        this.approvalStatus = approvalStatus;
+    }
 
-
-
+    public IncidentDto(int incidentId, String companyName, String industryName, String incidentType, String incidentDate, String approvalStatus, String incidentDescription, String actionTaken) {
+        this.incidentId = incidentId;
+        this.companyName = companyName;
+        this.industryName = industryName;
+        this.incidentType = incidentType;
+        this.incidentDate = incidentDate;
+        this.approvalStatus = approvalStatus;
+        this.incidentDescription = incidentDescription;
+        this.actionTaken = actionTaken;
+    }
 
     // getter setter - 이한승
     public long getIncidentId() {
@@ -137,5 +154,30 @@ public class IncidentDto {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getIndustryName() {
+        return industryName;
+    }
+
+    public void setIndustryName(String industryName) {
+        this.industryName = industryName;
+    }
+
+    @Override
+    public String toString() {
+        return "IncidentDto{" +
+                "incidentId=" + incidentId +
+                ", incidentYear='" + incidentYear + '\'' +
+                ", incidentDate='" + incidentDate + '\'' +
+                ", incidentType='" + incidentType + '\'' +
+                ", incidentDescription='" + incidentDescription + '\'' +
+                ", actionTaken='" + actionTaken + '\'' +
+                ", approvalStatus='" + approvalStatus + '\'' +
+                ", approvalTime='" + approvalTime + '\'' +
+                ", companyId=" + companyId +
+                ", companyName='" + companyName + '\'' +
+                ", industryName='" + industryName + '\'' +
+                '}';
     }
 }

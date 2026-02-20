@@ -1,7 +1,11 @@
 package securityincident.view;
 
 import securityincident.controller.AdminController;
+import securityincident.controller.IncidentController;
+import securityincident.controller.CrawlController;
+import securityincident.model.dto.IncidentDto;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -12,6 +16,7 @@ public class AdminView {
 
     private AdminController ac;
     private CompanyView cv;
+    private IncidentView icv;
 
     Scanner scan = new Scanner(System.in);
 
@@ -43,6 +48,7 @@ public class AdminView {
     public void adminMenu(){ //메소드명 안 정해서 임의지정함
         if(ac == null) {ac = AdminController.getInstance();}
         if(cv == null) {cv = CompanyView.getInstance();}
+        if(icv == null) {icv = IncidentView.getInstance();}
         for(;;){
             try{
                 System.out.println("──┤ 관리자 메뉴 ├─────────────────────────────────────────");
@@ -53,9 +59,68 @@ public class AdminView {
                 System.out.println("5. 로그아웃\n");
                 System.out.print("선택 > ");      int ch = scan.nextInt();
                 if (ch == 1) {cv.index();}
-                else if (ch == 2) {IncidentView.getInstance().incidentMenu();}
-                else if (ch == 3) {}
-                else if (ch == 4) {}
+                else if (ch == 2) {icv.incidentMenu();}
+                else if (ch == 3) {
+
+                    scan.nextLine();
+
+                    System.out.println("──┤ 승인 대기 사고 목록 ├────────────────────────");
+
+                    ArrayList<IncidentDto> list =
+                            IncidentController.getInstance().findPendingIncidents();
+
+                    if(list.isEmpty()){
+                        System.out.println("승인 대기 사고가 없습니다.");
+                        break;
+                    }
+
+                    for(IncidentDto dto : list){
+                        System.out.println("사고번호: " + dto.getIncidentId()
+                                + " | 기업: " + dto.getCompanyName()
+                                + " | 유형: " + dto.getIncidentType()
+                                + " | 날짜: " + dto.getIncidentDate());
+                    }
+
+                    System.out.print("승인할 사고 번호 입력 > ");
+                    int incidentId = scan.nextInt();
+
+                    boolean result =
+                            IncidentController.getInstance().approveIncident(incidentId);
+
+                    if(result){
+                        System.out.println("[완료] 사고 승인 처리되었습니다.");
+                    }else{
+                        System.out.println("[실패] 승인 가능한 사고가 아닙니다.");
+                    }
+                }
+
+
+                else if (ch == 4) {
+                    scan.nextLine(); // 버퍼 정리
+                    System.out.println("──┤ 크롤링 상태 수정 ├─────────────────────────────────────────");
+                    System.out.print("크롤링 실행 ID 입력 > ");
+                    int crawId = scan.nextInt();
+                    scan.nextLine();
+
+                    System.out.print("상태 입력 (SUCCESS/PARTIAL/FAIL) > ");
+                    String status = scan.nextLine();
+
+                    System.out.print("수집 기사 수 입력 > ");
+                    int count = scan.nextInt();
+                    scan.nextLine();
+
+                    System.out.print("메시지 입력 > ");
+                    String msg = scan.nextLine();
+
+                    boolean result = ac.updateCrawling(crawId, status, count, msg);
+
+                    if(result){
+                        System.out.println("[완료] 크롤링 상태가 수정되었습니다.");
+                    }else{
+                        System.out.println("[실패] 해당 크롤링 ID를 찾을 수 없습니다.");
+                    }
+                }
+
                 else if (ch == 5) {adminLogout(); return;}
                 else {
                     System.out.println("[경고] 없는 기능 번호입니다.");

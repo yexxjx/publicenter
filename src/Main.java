@@ -8,10 +8,11 @@ public class Main {
         try {
 
             ProcessBuilder pb = new ProcessBuilder(
-                    "python",
+                    "C:\\Users\\sku-102-06\\IdeaProjects\\publicenter\\venv\\Scripts\\python.exe",
                     "-X",
                     "utf8",
                     "crawler.py"
+
             );
 
 

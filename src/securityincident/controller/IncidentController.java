@@ -72,10 +72,11 @@ public class IncidentController {
     }
 
     //연도별 보안 사고 검색
-     public ArrayList<IncidentDto> incidentFindByYear(String year){
+    public ArrayList<IncidentDto> incidentFindByYear(String year){
         ArrayList<IncidentDto>db = id.incidentFindByYear(year);
         return db;
-     }
+    } // m end
+
 
     // 유형 목록 가져오기
     public ArrayList<String> getIncidentTypeList(){
@@ -111,5 +112,28 @@ public class IncidentController {
     public ArrayList<String> statByType(){
         return id.statByType();
     }
+    // 사고 승인 처리
+    public boolean approveIncident(int incidentId){
+        return id.approveIncident(incidentId);
+    }
+
+    // 승인 대기 사고 목록 조회
+    public ArrayList<IncidentDto> findPendingIncidents(){
+        return id.findPendingIncidents();
+    }
+    // 자동 사고 등록 (크롤링 감지용)
+    public boolean autoInsertIncident(String incidentYear,
+                                      String incidentType,
+                                      String description,
+                                      int companyId){
+
+        return id.autoInsertIncident(
+                incidentYear,
+                incidentType,
+                description,
+                companyId
+        );
+    }
+
 
 } // class end
