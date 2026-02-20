@@ -6,7 +6,7 @@ import securityincident.model.dto.IndustryDto;
 import java.sql.*;
 import java.util.ArrayList;
 
-import static javax.management.remote.JMXConnectorFactory.connect;
+
 
 public class IndustryDao {
     private IndustryDao(){connect();}
