@@ -7,14 +7,10 @@ import securityincident.model.dto.IncidentDto;
 import java.util.ArrayList;
 
 public class IncidentController {
-
-    // 싱글톤 - 이한승
+    // 싱글톤
     private IncidentController(){}
     private static final IncidentController instance = new IncidentController();
-    public static IncidentController getInstance(){
-        return instance;
-    }
-
+    public static IncidentController getInstance(){return instance;}
     private IncidentDao id = IncidentDao.getInstance();
 
     // 1. 보안사고관리
@@ -49,10 +45,22 @@ public class IncidentController {
         return result;
     }
 
-    // 보안사고조회
+    // * 보안사고 전체 조회
     public ArrayList<IncidentDto> incidentFindAll(){
-        ArrayList<IncidentDto>db = id.incidentFindAll();
-        return db;
+        ArrayList<IncidentDto> incidentDtos = id.incidentFindAll();
+        return incidentDtos;
+    }
+
+    // * 기업별 보안 사고 조회
+    public ArrayList<IncidentDto> incidentFindByCompany(String companyName){
+        ArrayList<IncidentDto> incidentDtos = id.incidentFindByCompany(companyName);
+        return incidentDtos;
+    }
+
+    // * 사고 상세 정보 조회
+    public ArrayList<IncidentDto> incidentFindOne(int incidentId){
+        ArrayList<IncidentDto> incidentDtos = id.incidentFindOne(incidentId);
+        return incidentDtos;
     }
 
     // 보안사고수정
