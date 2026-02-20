@@ -33,7 +33,7 @@ public class MainView {
                 if (ch == 1) {companyIndex();}
                 else if (ch == 2) {icv.incidentFindMenu();}
                 else if (ch == 3) {icv.SearchView();}
-                else if (ch == 4) { }
+                else if (ch == 4) { icv.statView(); }
                 else if (ch == 5) { av.adminLogin();}
                 else if (ch == 6) { programEnd();}
                 else {

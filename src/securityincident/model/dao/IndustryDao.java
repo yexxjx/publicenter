@@ -1,6 +1,5 @@
 package securityincident.model.dao;
 
-import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import securityincident.model.dto.IndustryDto;
 
 import java.sql.*;
