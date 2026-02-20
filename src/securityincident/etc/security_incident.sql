@@ -2,10 +2,9 @@
 CREATE DATABASE IF NOT EXISTS security_db;
 USE security_db;
 SET SQL_SAFE_UPDATES = 0;
-DELETE FROM article;
-ALTER TABLE article AUTO_INCREMENT = 1;
+-- DELETE FROM article;
+-- ALTER TABLE article AUTO_INCREMENT = 1;
 SET SQL_SAFE_UPDATES = 1;
-    
 -- 2. 산업군 테이블 생성 및 데이터 입력
 CREATE TABLE IF NOT EXISTS industry (
     industryId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -2008,3 +2007,4 @@ LIMIT 5;
 SHOW TABLES;
 SELECT * FROM company;
 SELECT * FROM article;
+SELECT * FROM crawl_log ORDER BY crawlTime DESC;

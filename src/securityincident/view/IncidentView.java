@@ -27,7 +27,7 @@ public class IncidentView {
     private Scanner scan = new Scanner(System.in);
 
 
-    //1. 보안사고관리 (관리자)
+    //1. 보안사고관리
     public void incidentMenu(){
         for(;;){
             System.out.println("──┤ 보안 사고 관리 ├──────────────────────────────────────");

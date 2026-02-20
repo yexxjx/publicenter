@@ -59,7 +59,7 @@ public class AdminView {
                 System.out.println("5. 로그아웃\n");
                 System.out.print("선택 > ");      int ch = scan.nextInt();
                 if (ch == 1) {cv.index();}
-                else if (ch == 2) {icv.incidentMenu();}
+                else if (ch == 2) {icv.incidentFindMenu();}
                 else if (ch == 3) {
 
                     scan.nextLine();

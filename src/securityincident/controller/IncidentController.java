@@ -1,5 +1,6 @@
 package securityincident.controller;
 
+import securityincident.model.dao.CompanyDao;
 import securityincident.model.dao.IncidentDao;
 import securityincident.model.dto.IncidentDto;
 
@@ -95,6 +96,30 @@ public class IncidentController {
         return id.incidentFindByType(type);
     }
 
+    // 산업군 목록
+    public ArrayList<String> getIndustryList(){
+        return id.getIndustryList();
+    }
+
+    // 산업군 검색
+    public ArrayList<IncidentDto> incidentFindByIndustry(String industryName){
+        return id.incidentFindByIndustry(industryName);
+    }
+
+    // 기업별 사고 건수
+    public ArrayList<String> statByCompany(){
+        return id.statByCompany();
+    }
+
+    // 연도별 사고 건수
+    public ArrayList<String> statByYear(){
+        return id.statByYear();
+    }
+
+    // 유형별 사고 건수
+    public ArrayList<String> statByType(){
+        return id.statByType();
+    }
     // 사고 승인 처리
     public boolean approveIncident(int incidentId){
         return id.approveIncident(incidentId);
@@ -117,7 +142,6 @@ public class IncidentController {
                 companyId
         );
     }
-
 
 
 } // class end
