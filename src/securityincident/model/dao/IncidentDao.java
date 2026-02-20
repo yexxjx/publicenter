@@ -8,42 +8,40 @@ import java.util.ArrayList;
 
 public class IncidentDao {
 
-    // 싱글톤
-    private IncidentDao() {
-        connect();
-    }
-
+    // 싱글톤 - 이한승
+    private IncidentDao(){connect();}
     private static final IncidentDao instance = new IncidentDao();
-
-    public static IncidentDao getInstance() {
+    public static IncidentDao getInstance(){
         return instance;
     }
 
     // 데이터 베이스 연동
     private String url = "jdbc:mysql://localhost:3306/security_db";
     private String user = "root";
-    private String password = "1234";
+    private String password ="1234";
 
     private Connection conn;
 
-    private void connect() {
-        try {
+    private void connect(){
+        try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(url, user, password);
+            conn = DriverManager.getConnection(url,user,password);
             System.out.println("데이터베이스 연동 성공");
-        } catch (Exception e) {
+        }catch (Exception e){
             System.out.println("데이터베이스 연동 실패");
             e.printStackTrace();
         }
     }
 
-    // 1. 보안사고 관리
-    // 보안사고 등록 DAO
-    public boolean incidentAddByAdmin(IncidentDto incidentDto) {
-        try {
-            String sql = "INSERT INTO incident " +
-                    "(incidentYear, incidentType, incidentDescription, actionTaken, companyId) " +
-                    "VALUES (?, ?, ?, ?, ?)";
+    // ============================================================
+    // 1) 관리자 수동 등록 (기본: 대기로 넣고 승인 화면에서 승인 처리)
+    //    - 만약 "관리자 등록은 바로 승인완료"로 하고 싶으면 approvalStatus를 '승인 완료'로 바꾸면 됨
+    // ============================================================
+    public boolean incidentAddByAdmin(IncidentDto incidentDto){
+        try{
+            String sql =
+                    "INSERT INTO incident (incidentYear, incidentDate, incidentType, incidentDescription, actionTaken, approvalStatus, companyId) " +
+                            "VALUES (?, CURDATE(), ?, ?, ?, '대기', ?)";
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
@@ -53,11 +51,9 @@ public class IncidentDao {
             ps.setString(4, incidentDto.getActionTaken());
             ps.setInt(5, incidentDto.getCompanyId());
 
-            int result = ps.executeUpdate(); // 1이면 성공, 0이면 실패
-            if (result == 1) return true;
+            return ps.executeUpdate() == 1;
 
-
-        } catch (SQLException e) {
+        }catch (SQLException e){
             e.printStackTrace();
         }
         return false;
@@ -81,34 +77,32 @@ public class IncidentDao {
     }
 
     // 보안사고 삭제
-    public boolean incidentDelete(int incidentId) {
-        try {
-            String sql = "delete from incident where incidentid=?";
+    public boolean incidentDelete(int incidentId){
+        try{
+            String sql ="delete from incident where incidentid=?";
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, incidentId);
+            ps.setInt(1,incidentId);
 
             int count = ps.executeUpdate();
-            if (count == 1) {
-                return true;
-            }
+            if(count==1){return true;}
 
-        } catch (SQLException e) {
-            System.out.println("sql 문법 오류" + e);
+        }catch (SQLException e){
+            System.out.println("sql 문법 오류"+e);
         }
         return false;
     }
 
-    //보안사고 조회
-    public ArrayList<IncidentDto> incidentFindAll() {
+    // * 보안사고 전체 조회
+    public ArrayList<IncidentDto> incidentFindAll(){
         ArrayList<IncidentDto> incidentDtos = new ArrayList<>();
-        try {
+        try{
             String sql = "SELECT i.*, c.companyName, ind.industryName " +
                     "FROM incident i " +
                     "LEFT JOIN company c ON i.companyId = c.companyId " +
                     "LEFT JOIN industry ind ON c.industryId = ind.industryId;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
+            while(rs.next()){
                 int incidentId = rs.getInt("incidentId");
                 String companyName = rs.getString("companyName");
                 String industryName = rs.getString("industryName");
@@ -119,13 +113,13 @@ public class IncidentDao {
                 incidentDtos.add(incidentDto);
             }
         } catch (SQLException e) {
-            System.out.println("[시스템오류] SQL 문법 문제 발생: " + e);
+            System.out.println("[시스템오류] SQL 문법 문제 발생: "+e);
         }
         return incidentDtos;
     }
 
     // * 사고 상세 정보 조회
-    public ArrayList<IncidentDto> incidentFindOne(int incidentId) {
+    public ArrayList<IncidentDto> incidentFindOne(int incidentId){
         ArrayList<IncidentDto> incidentDtos = new ArrayList<>();
         try {
             String sql = "SELECT i.*, c.companyName, ind.industryName " +
@@ -134,9 +128,9 @@ public class IncidentDao {
                     "INNER JOIN industry ind ON c.industryId = ind.industryId " +
                     "WHERE i.incidentId = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, incidentId);
+            ps.setInt(1,incidentId);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+            if(rs.next()) {
                 int rsId = rs.getInt("incidentId");
                 String companyName = rs.getString("companyName");
                 String industryName = rs.getString("industryName");
@@ -149,13 +143,13 @@ public class IncidentDao {
                 incidentDtos.add(dto);
             }
         } catch (SQLException e) {
-            System.out.println("[시스템오류] SQL 문법 문제 발생: " + e);
+            System.out.println("[시스템오류] SQL 문법 문제 발생: "+e);
         }
         return incidentDtos;
     }
 
     // * 기업별 보안 사고 조회
-    public ArrayList<IncidentDto> incidentFindByCompany(String companyName) {
+    public ArrayList<IncidentDto> incidentFindByCompany(String companyName){
         ArrayList<IncidentDto> incidentDtos = new ArrayList<>();
         try {
             String sql = "SELECT i.*, c.companyName, ind.industryName " +
@@ -166,7 +160,7 @@ public class IncidentDao {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, companyName.trim());
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
+            while(rs.next()){
                 int incidentId = rs.getInt("incidentId");
                 String incidentType = rs.getString("incidentType");
                 String incidentDate = rs.getString("incidentDate");
@@ -174,16 +168,20 @@ public class IncidentDao {
                 incidentDtos.add(dto);
             }
         } catch (SQLException e) {
-            System.out.println("[시스템오류] SQL 문법 문제 발생: " + e);
+            System.out.println("[시스템오류] SQL 문법 문제 발생: "+e);
         }
         return incidentDtos;
     }
 
     // 보안사고수정
     public boolean incidentUpdate(int incidentId, String incidentYear, String incidentDate,
-                                  String incidentType, String incidentDescription, String actionTaken) {
-        try {
-            String sql = "UPDATE securityIncident SET incidentYear=?, incidentDate=?, incidentType=?, incidentDescription=?, actionTaken=? WHERE incidentId=?";
+                                  String incidentType, String incidentDescription, String actionTaken){
+        try{
+            String sql =
+                    "UPDATE incident " +
+                            "SET incidentYear=?, incidentDate=?, incidentType=?, incidentDescription=?, actionTaken=? " +
+                            "WHERE incidentId=?";
+
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setString(1, incidentYear);
@@ -194,102 +192,35 @@ public class IncidentDao {
             ps.setInt(6, incidentId);
 
             int count = ps.executeUpdate();
-            if (count == 1) {
-                return true;
-            }
-        } catch (SQLException e) {
-            System.out.println("SQL 문법 오류" + e);
+            if(count==1){return true;}
+        }catch (SQLException e){
+            System.out.println("SQL 문법 오류"+e);
         }
         return false;
     }
 
-    //연도별 보안 사고 검색
-    public ArrayList<IncidentDto> incidentFindByYear(String year) {
+    // ============================================================
+    // 5) 연도별 조회
+    // ============================================================
+    public ArrayList<IncidentDto> incidentFindByYear(String year){
         ArrayList<IncidentDto> db = new ArrayList<>();
         try {
-            String sql = "SELECT s.incidentId, s.incidentYear, s.incidentDate, " +
-                    "s.incidentType, s.incidentDescription, s.actionTaken, " +
-                    "s.approvalStatus, s.approvalTime, s.companyId, " +
-                    "c.companyName " +
-                    "FROM incident s " +
-                    "JOIN company c ON s.companyId = c.companyId " +
-                    "WHERE s.incidentYear = ?";
+            String sql =
+                    "SELECT i.incidentId, i.incidentYear, i.incidentDate, " +
+                            "i.incidentType, i.incidentDescription, i.actionTaken, " +
+                            "i.approvalStatus, i.approvalTime, i.companyId, c.companyName " +
+                            "FROM incident i " +
+                            "JOIN company c ON i.companyId = c.companyId " +
+                            "WHERE i.incidentYear = ?";
+
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, year);
+            ps.setString(1,year);
 
             ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
-                int incidentId = rs.getInt("incidentId");
-                String incidentYear = rs.getString("incidentYear");
-                String incidentDate = rs.getString("incidentDate");
-                String incidentType = rs.getString("incidentType");
-                String incidentDescription = rs.getString("incidentDescription");
-                String actionTaken = rs.getString("actionTaken");
-                String approvalStatus = rs.getString("approvalStatus");
-                String approvalTime = rs.getString("approvalTime");
-                int companyId = rs.getInt("companyId");
-                String companyName = rs.getString("companyName");
-
-                IncidentDto incidentDto = new IncidentDto(
-                        incidentId,
-                        incidentYear,
-                        incidentDate,
-                        incidentType,
-                        incidentDescription,
-                        actionTaken,
-                        approvalStatus,
-                        approvalTime,
-                        companyId,
-                        companyName
-
-                );
-
-                db.add(incidentDto);
-            } // while end
-        } catch (SQLException e) {
-            System.out.println("SQL 문법 오류");
-        }
-        return db;
-    }
-
-    // 사고 유형 목록 조회
-    public ArrayList<String> getIncidentTypeList() {
-        ArrayList<String> list = new ArrayList<>();
-        try {
-            String sql = "SELECT DISTINCT incidentType FROM incident";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                list.add(rs.getString("incidentType"));
-            }
-
-        } catch (SQLException e) {
-            System.out.println("SQL 오류");
-        }
-        return list;
-    }
-
-
-    //사고 유형 검색
-    public ArrayList<IncidentDto> incidentFindByType(String type) {
-        ArrayList<IncidentDto> db = new ArrayList<>();
-        try {
-            String sql = "SELECT s.incidentId, s.incidentYear, s.incidentDate, " +
-                    "s.incidentType, s.incidentDescription, s.actionTaken, " +
-                    "s.approvalStatus, s.approvalTime, s.companyId, " +
-                    "c.companyName " +
-                    "FROM incident s " +
-                    "JOIN company c ON s.companyId = c.companyId " +
-                    "WHERE s.incidentType = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, type);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
+            while(rs.next()){
                 db.add(new IncidentDto(
-                        rs.getInt("incidentId"),
+                        (int) rs.getLong("incidentId"),
                         rs.getString("incidentYear"),
                         rs.getString("incidentDate"),
                         rs.getString("incidentType"),
@@ -301,33 +232,76 @@ public class IncidentDao {
                         rs.getString("companyName")
                 ));
             }
-        } catch (SQLException e) {
-            System.out.println("SQL 오류");
+        }catch (SQLException e){
+            System.out.println("SQL 문법 오류");
         }
         return db;
     }
 
-    // 산업군 목록
-    public ArrayList<String> getIndustryList() {
+    // ============================================================
+    // 6) 유형 목록
+    // ============================================================
+    public ArrayList<String> getIncidentTypeList(){
         ArrayList<String> list = new ArrayList<>();
-        try {
-            String sql = "SELECT DISTINCT industryName FROM industry";
+        try{
+            String sql = "SELECT DISTINCT incidentType FROM incident";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                list.add(rs.getString("industryName"));
+
+            while(rs.next()){
+                list.add(rs.getString("incidentType"));
             }
-        } catch (SQLException e) {
-            System.out.println("SQL 오류");
+
+        }catch(SQLException e){
+            System.out.println("SQL 오류 " + e);
         }
         return list;
     }
 
     // ============================================================
+    // 7) 유형별 검색
+    // ============================================================
+    public ArrayList<IncidentDto> incidentFindByType(String type){
+        ArrayList<IncidentDto> db = new ArrayList<>();
+        try{
+            String sql =
+                    "SELECT i.incidentId, i.incidentYear, i.incidentDate, " +
+                            "i.incidentType, i.incidentDescription, i.actionTaken, " +
+                            "i.approvalStatus, i.approvalTime, i.companyId, c.companyName " +
+                            "FROM incident i " +
+                            "JOIN company c ON i.companyId = c.companyId " +
+                            "WHERE i.incidentType = ?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, type);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                db.add(new IncidentDto(
+                        (int) rs.getLong("incidentId"),
+                        rs.getString("incidentYear"),
+                        rs.getString("incidentDate"),
+                        rs.getString("incidentType"),
+                        rs.getString("incidentDescription"),
+                        rs.getString("actionTaken"),
+                        rs.getString("approvalStatus"),
+                        rs.getString("approvalTime"),
+                        rs.getInt("companyId"),
+                        rs.getString("companyName")
+                ));
+            }
+        }catch(SQLException e){
+            System.out.println("SQL 오류");
+        }
+        return db;
+    }
+
+    // ============================================================
     // 8) 승인 처리 (대기 상태인 것만 승인)
     // ============================================================
-    public boolean approveIncident(int incidentId) {
-        try {
+    public boolean approveIncident(int incidentId){
+        try{
             String sql =
                     "UPDATE incident " +
                             "SET approvalStatus='승인 완료', approvalTime=NOW() " +
@@ -338,7 +312,7 @@ public class IncidentDao {
 
             return ps.executeUpdate() == 1;
 
-        } catch (SQLException e) {
+        }catch(SQLException e){
             System.out.println("SQL 오류 " + e);
         }
         return false;
@@ -351,9 +325,9 @@ public class IncidentDao {
     public boolean autoInsertIncident(String incidentYear,
                                       String incidentType,
                                       String description,
-                                      int companyId) {
+                                      int companyId){
 
-        try {
+        try{
             String sql =
                     "INSERT INTO incident (incidentYear, incidentDate, incidentType, incidentDescription, approvalStatus, companyId) " +
                             "SELECT ?, CURDATE(), ?, ?, '대기', ? " +
@@ -371,107 +345,20 @@ public class IncidentDao {
 
             ps.setInt(5, companyId);
             ps.setString(6, incidentType);
+
             return ps.executeUpdate() == 1;
 
-        } catch (SQLException e) {
+        }catch(SQLException e){
             System.out.println("자동 사고 등록 실패: " + e);
             e.printStackTrace();
         }
         return false;
     }
 
-    // 산업군별 검색
-    public ArrayList<IncidentDto> incidentFindByIndustry(String industryName) {
-        ArrayList<IncidentDto> db = new ArrayList<>();
-        try {
-            String sql = "SELECT s.incidentId, s.incidentYear, s.incidentDate, " +
-                    "s.incidentType, s.incidentDescription, s.actionTaken, " +
-                    "s.approvalStatus, s.approvalTime, s.companyId, c.companyName " +
-                    "FROM securityIncident s " +
-                    "JOIN company c ON s.companyId = c.companyId " +
-                    "JOIN industry i ON c.industryId = i.industryId " +
-                    "WHERE i.industryName = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, industryName);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                db.add(new IncidentDto(
-                        rs.getInt("incidentId"),
-                        rs.getString("incidentYear"),
-                        rs.getString("incidentDate"),
-                        rs.getString("incidentType"),
-                        rs.getString("incidentDescription"),
-                        rs.getString("actionTaken"),
-                        rs.getString("approvalStatus"),
-                        rs.getString("approvalTime"),
-                        rs.getInt("companyId"),
-                        rs.getString("companyName")
-                ));
-            }
-        } catch (SQLException e) {
-            System.out.println("SQL 오류");
-        }
-        return db;
-    }
-
-    // 기업별 사고 건수
-    public ArrayList<String> statByCompany() {
-        ArrayList<String> list = new ArrayList<>();
-        try {
-            String sql = "SELECT c.companyName, COUNT(s.incidentId) AS cnt " +
-                    "FROM securityIncident s " +
-                    "JOIN company c ON s.companyId = c.companyId " +
-                    "GROUP BY c.companyName";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                list.add(rs.getString("companyName") + " : " + rs.getInt("cnt") + "건");
-            }
-        } catch (SQLException e) {
-            System.out.println("SQL 오류");
-        }
-        return list;
-    }
-
-    // 연도별 사고 건수
-    public ArrayList<String> statByYear() {
-        ArrayList<String> list = new ArrayList<>();
-        try {
-            String sql = "SELECT incidentYear, COUNT(incidentId) AS cnt " +
-                    "FROM securityIncident GROUP BY incidentYear ORDER BY incidentYear";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                list.add(rs.getString("incidentYear") + "년 : " + rs.getInt("cnt") + "건");
-            }
-        } catch (SQLException e) {
-            System.out.println("SQL 오류");
-        }
-        return list;
-    }
-
-    // 유형별 사고 건수
-    public ArrayList<String> statByType() {
-        ArrayList<String> list = new ArrayList<>();
-        try {
-            String sql = "SELECT incidentType, COUNT(incidentId) AS cnt " +
-                    "FROM securityIncident GROUP BY incidentType";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                list.add(rs.getString("incidentType") + " : " + rs.getInt("cnt") + "건");
-            }
-        } catch (SQLException e) {
-            System.out.println("SQL 오류");
-        }
-        return list;
-    }
-
     // ============================================================
     // 10) 승인 대기 목록 조회  ✅ DTO 생성자 호출 수정 완료
     // ============================================================
-    public ArrayList<IncidentDto> findPendingIncidents() {
+    public ArrayList<IncidentDto> findPendingIncidents(){
         ArrayList<IncidentDto> list = new ArrayList<>();
 
         try{
@@ -500,6 +387,103 @@ public class IncidentDao {
             e.printStackTrace();
         }
 
+        return list;
+    }
+
+    // 산업군 목록
+    public ArrayList<String> getIndustryList(){
+        ArrayList<String> list = new ArrayList<>();
+        try{
+            String sql = "SELECT DISTINCT industryName FROM industry";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                list.add(rs.getString("industryName"));
+            }
+        }catch(SQLException e){
+            System.out.println("SQL 오류");
+        }
+        return list;
+    }
+
+    // 산업군별 검색
+    public ArrayList<IncidentDto> incidentFindByIndustry(String industryName){
+        ArrayList<IncidentDto> db = new ArrayList<>();
+        try{
+            String sql = "SELECT s.incidentId, s.incidentYear, s.incidentDate, " +
+                    "s.incidentType, s.incidentDescription, s.actionTaken, " +
+                    "s.approvalStatus, s.approvalTime, s.companyId, c.companyName " +
+                    "FROM incident s " +
+                    "JOIN company c ON s.companyId = c.companyId " +
+                    "JOIN industry i ON c.industryId = i.industryId " +
+                    "WHERE i.industryName = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, industryName);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                db.add(new IncidentDto(
+                        rs.getInt("incidentId"),
+                        rs.getString("incidentYear"),
+                        rs.getString("incidentDate"),
+                        rs.getString("incidentType"),
+                        rs.getString("incidentDescription"),
+                        rs.getString("actionTaken"),
+                        rs.getString("approvalStatus"),
+                        rs.getString("approvalTime"),
+                        rs.getInt("companyId"),
+                        rs.getString("companyName")
+                ));
+            }
+        }catch(SQLException e){
+            System.out.println("SQL 오류");
+        }
+        return db;
+    }
+    // 기업별 사고 건수
+    public ArrayList<String> statByCompany(){
+        ArrayList<String> list = new ArrayList<>();
+        try{
+            String sql = "SELECT c.companyName, COUNT(s.incidentId) AS cnt " +
+                    "FROM incident s " +
+                    "JOIN company c ON s.companyId = c.companyId " +
+                    "GROUP BY c.companyName";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                list.add(rs.getString("companyName") + " : " + rs.getInt("cnt") + "건");
+            }
+        }catch(SQLException e){ System.out.println("SQL 오류"); }
+        return list;
+    }
+
+    // 연도별 사고 건수
+    public ArrayList<String> statByYear(){
+        ArrayList<String> list = new ArrayList<>();
+        try{
+            String sql = "SELECT incidentYear, COUNT(incidentId) AS cnt " +
+                    "FROM incident GROUP BY incidentYear ORDER BY incidentYear";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                list.add(rs.getString("incidentYear") + "년 : " + rs.getInt("cnt") + "건");
+            }
+        }catch(SQLException e){ System.out.println("SQL 오류"); }
+        return list;
+    }
+
+    // 유형별 사고 건수
+    public ArrayList<String> statByType(){
+        ArrayList<String> list = new ArrayList<>();
+        try{
+            String sql = "SELECT incidentType, COUNT(incidentId) AS cnt " +
+                    "FROM incident GROUP BY incidentType";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                list.add(rs.getString("incidentType") + " : " + rs.getInt("cnt") + "건");
+            }
+        }catch(SQLException e){ System.out.println("SQL 오류"); }
         return list;
     }
 }

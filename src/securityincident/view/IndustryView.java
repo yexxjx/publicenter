@@ -1,5 +1,6 @@
 package securityincident.view;
 
+import securityincident.controller.CompanyController;
 import securityincident.controller.IndustryController;
 import securityincident.model.dto.IndustryDto;
 
@@ -13,19 +14,21 @@ public class IndustryView {
     public static IndustryView getInstance(){return instance;}
 
     private IndustryController ic=IndustryController.getInstance();
+    private CompanyView cv = CompanyView.getInstance();
 
     public Scanner scan=new Scanner(System.in);
     public void index() {
         for (; ; ) {
             try {
                 System.out.println("──┤ 기업 정보 관리 ├──────────────────────────────────────");
-                System.out.println("1.산업군 조회|2.산업군 등록ㅣ3.산업군 수정ㅣ4.산업군 삭제");
+                System.out.println("1.산업군 조회|2.산업군 등록ㅣ3.산업군 수정ㅣ4.산업군 삭제ㅣ5.뒤로가기");
                 System.out.println("선택 > ");
                 int ch = scan.nextInt();
                 if (ch == 1) {industryFindAll();}
                 else if (ch == 2) {industryAdd();}
                 else if (ch == 3) {industryUpdate();}
                 else if (ch == 4) {industryDelete();}
+                else if( ch == 5 ){ return; }
                 else {
                     System.out.println("[경고] 없는 기능 번호입니다.");
                 }
@@ -57,7 +60,12 @@ public class IndustryView {
                 System.out.println("2. 이전 메뉴로 돌아가기");
                 System.out.print("선택> ");
                 int ch = scan.nextInt();
-                if (ch == 1) { }
+                if (ch == 1) {
+
+
+                    cv.companyFindOne();
+
+                }
                 else if (ch == 2) { return;}
                 else {
                     System.out.println("[경고] 없는 기능 번호입니다.");
