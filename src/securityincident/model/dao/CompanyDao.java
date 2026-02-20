@@ -57,8 +57,8 @@ public class CompanyDao {
         ArrayList<CompanyDto> companyDtos = new ArrayList<>();
         try {
             String sql = "SELECT c.*, i.industryName, " +
-                    "(SELECT COUNT(*) FROM securityIncident WHERE companyId = c.companyId) AS incidentCount, " +
-                    "(SELECT MAX(incidentDate) FROM securityIncident WHERE companyId = c.companyId) AS lastIncidentDate " +
+                    "(SELECT COUNT(*) FROM incident WHERE companyId = c.companyId) AS incidentCount, " +
+                    "(SELECT MAX(incidentDate) FROM incident WHERE companyId = c.companyId) AS lastIncidentDate " +
                     "FROM company c " +
                     "JOIN industry i ON c.industryId = i.industryId " +
                     "WHERE c.companyId = ?";

@@ -186,7 +186,35 @@ public class IncidentView {
 
     // * 기업별 보안 사고 조회
     public void incidentFindByCompany(){
-
+        for(;;){
+            try{
+                scan.nextLine();
+                System.out.println("──┤ 기업별 보안 사고 조회 ├──────────────────────────────────────────\n");
+                System.out.print("기업명 입력 >");        String companyName = scan.nextLine();
+                ArrayList<IncidentDto> incidentDtos = ic.incidentFindByCompany(companyName);
+                System.out.println("\n사고번호 | 사고유형        | 발생일");
+                System.out.println("----------------------------------");
+                for(IncidentDto list : incidentDtos) {
+                    System.out.printf(" %d | %s | %s\n", list.getIncidentId(), list.getIncidentType(), list.getIncidentDate());
+                }
+                System.out.println("\n======================== 다음 동작 선택 ========================\n");
+                System.out.println("1. 사고 상세 정보 조회");
+                System.out.println("2. 다른 기업 검색");
+                System.out.println("3. 이전 메뉴로 돌아가기");
+                System.out.print("선택 > ");        int ch = scan.nextInt();
+                if(ch==1){incidentFindOne();}
+                else if(ch==2){continue;}
+                else if(ch==3){return;}
+                else {
+                    System.out.println("[경고] 없는 기능 번호입니다.");
+                }
+            }catch (InputMismatchException e){
+                System.out.println("[경고] 잘못된 입력 방식입니다. [재입력]");
+                scan = new Scanner(System.in);
+            }catch (Exception e){
+                System.out.println("[시스템오류] 관리자에게 문의하세요.");e.printStackTrace();
+            }
+        }
     }
 
     // * 사고 상세 정보 조회
@@ -195,9 +223,9 @@ public class IncidentView {
             try {
                 System.out.println("──┤ 사고 상세 정보 조회 ├────────────────────────────────────────────\n");
                 System.out.print("사고번호 입력 > ");                int incidentId = scan.nextInt();
-                ArrayList<IncidentDto> companyDtos = ic.incidentFindOne(incidentId);
+                ArrayList<IncidentDto> incidentDtos = ic.incidentFindOne(incidentId);
                 System.out.println("[ 보안 사고 상세 정보 ]");
-                for(IncidentDto list: companyDtos) {
+                for(IncidentDto list: incidentDtos) {
                     System.out.printf(
                             "사고번호   : %d\n기업명   : %s\n산업군   : %s\n사고유형 : %s\n발생일 : %s\n\n승인상태 : %s건\n사고 내용\n- %s\n\n조치 내용\n- %s\n",
                             list.getIncidentId(),list.getCompanyName(),list.getIndustryName(),list.getIncidentType(),list.getIncidentDate(),list.getApprovalStatus(),list.getIncidentDescription(),list.getActionTaken()

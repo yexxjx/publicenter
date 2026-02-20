@@ -54,10 +54,10 @@ public class IncidentController {
     }
 
     // * 기업별 보안 사고 조회
-//    public ArrayList<IncidentDto> incidentFindByCompany(String companyName){
-//        ArrayList<IncidentDto> incidentDtos = id.incidentFindByCompany();
-//        return incidentDtos;
-//    }
+    public ArrayList<IncidentDto> incidentFindByCompany(String companyName){
+        ArrayList<IncidentDto> incidentDtos = id.incidentFindByCompany();
+        return incidentDtos;
+    }
 
     // * 사고 상세 정보 조회
     public ArrayList<IncidentDto> incidentFindOne(int incidentId){

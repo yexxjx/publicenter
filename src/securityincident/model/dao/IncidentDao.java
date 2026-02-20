@@ -36,7 +36,7 @@ public class IncidentDao {
     // 보안사고 등록 DAO
     public boolean incidentAddByAdmin(IncidentDto incidentDto){
         try{
-            String sql = "INSERT INTO securityIncident " +
+            String sql = "INSERT INTO incident " +
                     "(incidentYear, incidentType, incidentDescription, actionTaken, companyId) " +
                     "VALUES (?, ?, ?, ?, ?)";
 
@@ -78,7 +78,7 @@ public class IncidentDao {
     // 보안사고 삭제
     public boolean incidentDelete(int incidentId){
         try{
-            String sql ="delete from securityIncident where incidentid=?";
+            String sql ="delete from incident where incidentid=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1,incidentId);
 
@@ -148,15 +148,15 @@ public class IncidentDao {
     }
 
     // * 기업별 보안 사고 조회
-//    public ArrayList<IncidentDto> incidentFindByCompany(String companyName){
-//
-//    }
+    public ArrayList<IncidentDto> incidentFindByCompany(String companyName){
+
+    }
 
     // 보안사고수정
     public boolean incidentUpdate(int incidentId, String incidentYear, String incidentDate,
                                   String incidentType, String incidentDescription, String actionTaken){
         try{
-            String sql = "UPDATE securityIncident SET incidentYear=?, incidentDate=?, incidentType=?, incidentDescription=?, actionTaken=? WHERE incidentId=?";
+            String sql = "UPDATE incident SET incidentYear=?, incidentDate=?, incidentType=?, incidentDescription=?, actionTaken=? WHERE incidentId=?";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setString(1, incidentYear);
@@ -182,7 +182,7 @@ public class IncidentDao {
                     "s.incidentType, s.incidentDescription, s.actionTaken, " +
                     "s.approvalStatus, s.approvalTime, s.companyId, " +
                     "c.companyName " +
-                    "FROM securityIncident s " +
+                    "FROM incident s " +
                     "JOIN company c ON s.companyId = c.companyId " +
                     "WHERE s.incidentYear = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -228,7 +228,7 @@ public class IncidentDao {
     public ArrayList<String> getIncidentTypeList(){
         ArrayList<String> list = new ArrayList<>();
         try{
-            String sql = "SELECT DISTINCT incidentType FROM securityIncident";
+            String sql = "SELECT DISTINCT incidentType FROM incident";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
@@ -251,7 +251,7 @@ public class IncidentDao {
                     "s.incidentType, s.incidentDescription, s.actionTaken, " +
                     "s.approvalStatus, s.approvalTime, s.companyId, " +
                     "c.companyName " +
-                    "FROM securityIncident s " +
+                    "FROM incident s " +
                     "JOIN company c ON s.companyId = c.companyId " +
                     "WHERE s.incidentType = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -277,13 +277,6 @@ public class IncidentDao {
         }
         return db;
     }
-
-
-
-
-
-
-
 
     // 산업군별 검색
 
