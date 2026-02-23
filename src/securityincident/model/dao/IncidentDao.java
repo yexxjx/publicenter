@@ -300,57 +300,55 @@ public class IncidentDao {
     // ============================================================
     // 8) 승인 처리 (대기 상태인 것만 승인)
     // ============================================================
-    public boolean approveIncident(int incidentId){
+    public boolean approveIncident(int articleId){
         try{
-            String sql =
-                    "UPDATE incident " +
-                            "SET approvalStatus='승인 완료', approvalTime=NOW() " +
-                            "WHERE incidentId=? AND approvalStatus='대기'";
+            conn.setAutoCommit(false);
 
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, incidentId);
+            // 1. article 조회
+            String selectSql = "SELECT * FROM article WHERE articleId = ? AND approvalStatus = 'pending'";
+            PreparedStatement selectPs = conn.prepareStatement(selectSql);
+            selectPs.setInt(1, articleId);
+            ResultSet rs = selectPs.executeQuery();
 
-            return ps.executeUpdate() == 1;
+            if(!rs.next()){
+                conn.setAutoCommit(true);
+                return false; // 없거나 이미 승인된 기사
+            }
+
+            String title   = rs.getString("title");
+            String content = rs.getString("content");
+            Date articleDate = rs.getDate("articleDate");
+            int companyId  = rs.getInt("companyId");
+            String year    = articleDate != null
+                    ? String.valueOf(articleDate.toLocalDate().getYear())
+                    : String.valueOf(java.time.LocalDate.now().getYear());
+
+            // 2. incident INSERT
+            String insertSql =
+                    "INSERT INTO incident " +
+                            "(incidentYear, incidentDate, incidentType, incidentDescription, approvalStatus, approvalTime, companyId) " +
+                            "VALUES (?, ?, ?, ?, '승인 완료', NOW(), ?)";
+            PreparedStatement insertPs = conn.prepareStatement(insertSql);
+            insertPs.setString(1, year);
+            insertPs.setDate(2, articleDate);
+            insertPs.setString(3, "크롤링 수집"); // 기본 유형
+            insertPs.setString(4, content);
+            insertPs.setInt(5, companyId);
+            insertPs.executeUpdate();
+
+            // 3. article approvalStatus 업데이트
+            String updateSql = "UPDATE article SET approvalStatus = 'approved' WHERE articleId = ?";
+            PreparedStatement updatePs = conn.prepareStatement(updateSql);
+            updatePs.setInt(1, articleId);
+            updatePs.executeUpdate();
+
+            conn.commit();
+            conn.setAutoCommit(true);
+            return true;
 
         }catch(SQLException e){
-            System.out.println("SQL 오류 " + e);
-        }
-        return false;
-    }
-
-    // ============================================================
-    // 9) 자동 사고 등록 (중복 방지 포함)  ✅ 여기만 남김 (중복 제거 완료)
-    //    - 같은 회사(companyId)가 같은 날(CURDATE()) 같은 유형(incidentType)이면 추가 생성 안됨
-    // ============================================================
-    public boolean autoInsertIncident(String incidentYear,
-                                      String incidentType,
-                                      String description,
-                                      int companyId){
-
-        try{
-            String sql =
-                    "INSERT INTO incident (incidentYear, incidentDate, incidentType, incidentDescription, approvalStatus, companyId) " +
-                            "SELECT ?, CURDATE(), ?, ?, '대기', ? " +
-                            "FROM DUAL " +
-                            "WHERE NOT EXISTS ( " +
-                            "   SELECT 1 FROM incident " +
-                            "   WHERE companyId=? AND incidentType=? AND incidentDate=CURDATE() " +
-                            ")";
-
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, incidentYear);
-            ps.setString(2, incidentType);
-            ps.setString(3, description);
-            ps.setInt(4, companyId);
-
-            ps.setInt(5, companyId);
-            ps.setString(6, incidentType);
-
-            return ps.executeUpdate() == 1;
-
-        }catch(SQLException e){
-            System.out.println("자동 사고 등록 실패: " + e);
-            e.printStackTrace();
+            try{ conn.rollback(); conn.setAutoCommit(true); }catch(SQLException ignored){}
+            System.out.println("승인 처리 실패: " + e);
         }
         return false;
     }
@@ -360,20 +358,19 @@ public class IncidentDao {
     // ============================================================
     public ArrayList<IncidentDto> findPendingIncidents(){
         ArrayList<IncidentDto> list = new ArrayList<>();
-
         try{
             String sql =
-                    "SELECT i.incidentId, c.companyName, i.incidentType, i.incidentDate " +
-                            "FROM incident i " +
-                            "JOIN company c ON i.companyId = c.companyId " +
-                            "WHERE i.approvalStatus='대기' " +
-                            "ORDER BY i.incidentDate DESC, i.incidentId DESC";
+                    "SELECT a.articleId as incidentId, c.companyName, " +
+                            "a.title as incidentType, a.articleDate as incidentDate " +
+                            "FROM article a " +
+                            "JOIN company c ON a.companyId = c.companyId " +
+                            "WHERE a.approvalStatus = 'pending' " +
+                            "ORDER BY a.createdAt DESC";
 
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                // ✅ IncidentDto(int incidentId, String companyName, String incidentType, String incidentDate)
                 list.add(new IncidentDto(
                         rs.getInt("incidentId"),
                         rs.getString("companyName"),
@@ -381,12 +378,9 @@ public class IncidentDao {
                         rs.getString("incidentDate")
                 ));
             }
-
         }catch(SQLException e){
             System.out.println("대기 조회 실패: " + e);
-            e.printStackTrace();
         }
-
         return list;
     }
 
@@ -485,5 +479,34 @@ public class IncidentDao {
             }
         }catch(SQLException e){ System.out.println("SQL 오류"); }
         return list;
+    }
+    public boolean autoInsertIncident(String incidentYear,
+                                      String incidentType,
+                                      String description,
+                                      int companyId){
+        try{
+            String sql =
+                    "INSERT INTO incident (incidentYear, incidentDate, incidentType, incidentDescription, approvalStatus, companyId) " +
+                            "SELECT ?, CURDATE(), ?, ?, '대기', ? " +
+                            "FROM DUAL " +
+                            "WHERE NOT EXISTS ( " +
+                            "   SELECT 1 FROM incident " +
+                            "   WHERE companyId=? AND incidentType=? AND incidentDate=CURDATE() " +
+                            ")";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, incidentYear);
+            ps.setString(2, incidentType);
+            ps.setString(3, description);
+            ps.setInt(4, companyId);
+            ps.setInt(5, companyId);
+            ps.setString(6, incidentType);
+
+            return ps.executeUpdate() == 1;
+
+        }catch(SQLException e){
+            System.out.println("자동 사고 등록 실패: " + e);
+        }
+        return false;
     }
 }
