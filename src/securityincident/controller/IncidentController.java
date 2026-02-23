@@ -7,14 +7,10 @@ import securityincident.model.dto.IncidentDto;
 import java.util.ArrayList;
 
 public class IncidentController {
-
-    // 싱글톤 - 이한승
+    // 싱글톤
     private IncidentController(){}
     private static final IncidentController instance = new IncidentController();
-    public static IncidentController getInstance(){
-        return instance;
-    }
-
+    public static IncidentController getInstance(){return instance;}
     private IncidentDao id = IncidentDao.getInstance();
 
     // 1. 보안사고관리
@@ -49,10 +45,22 @@ public class IncidentController {
         return result;
     }
 
-    // 보안사고조회
+    // * 보안사고 전체 조회
     public ArrayList<IncidentDto> incidentFindAll(){
-        ArrayList<IncidentDto>db = id.incidentFindAll();
-        return db;
+        ArrayList<IncidentDto> incidentDtos = id.incidentFindAll();
+        return incidentDtos;
+    }
+
+    // * 기업별 보안 사고 조회
+    public ArrayList<IncidentDto> incidentFindByCompany(String companyName){
+        ArrayList<IncidentDto> incidentDtos = id.incidentFindByCompany(companyName);
+        return incidentDtos;
+    }
+
+    // * 사고 상세 정보 조회
+    public ArrayList<IncidentDto> incidentFindOne(int incidentId){
+        ArrayList<IncidentDto> incidentDtos = id.incidentFindOne(incidentId);
+        return incidentDtos;
     }
 
     // 보안사고수정
@@ -75,7 +83,8 @@ public class IncidentController {
     public ArrayList<IncidentDto> incidentFindByYear(String year){
         ArrayList<IncidentDto>db = id.incidentFindByYear(year);
         return db;
-    }
+    } // m end
+
 
     // 유형 목록 가져오기
     public ArrayList<String> getIncidentTypeList(){
@@ -111,5 +120,28 @@ public class IncidentController {
     public ArrayList<String> statByType(){
         return id.statByType();
     }
+    // 사고 승인 처리
+    public boolean approveIncident(int incidentId){
+        return id.approveIncident(incidentId);
+    }
+
+    // 승인 대기 사고 목록 조회
+    public ArrayList<IncidentDto> findPendingIncidents(){
+        return id.findPendingIncidents();
+    }
+    // 자동 사고 등록 (크롤링 감지용)
+    public boolean autoInsertIncident(String incidentYear,
+                                      String incidentType,
+                                      String description,
+                                      int companyId){
+
+        return id.autoInsertIncident(
+                incidentYear,
+                incidentType,
+                description,
+                companyId
+        );
+    }
+
 
 } // class end
