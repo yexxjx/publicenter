@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS industry (
     industryId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     industryName VARCHAR(50) NOT NULL
 );
-
 INSERT IGNORE INTO industry (industryId, industryName) VALUES (1, 'IT / 플랫폼'), (2, '제조');
 
 -- 3. 기업 정보 테이블 생성 및 데이터 입력
@@ -64,7 +63,7 @@ CREATE TABLE IF NOT EXISTS crawl_log (
     message text
 );
 
--- 6. 수집 기사 테이블 생성 (중복 방지를 위해 articleUrl UNIQUE 설정)
+-- 6. 수집 기사 테이블 생성
 CREATE TABLE IF NOT EXISTS article (
     articleId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     companyId INT NOT NULL,
@@ -74,6 +73,7 @@ CREATE TABLE IF NOT EXISTS article (
     articleDate DATE,
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     articleUrl VARCHAR(500) UNIQUE,
+    approvalStatus VARCHAR(10) NOT NULL DEFAULT 'pending',  -- ← 여기 추가
     CONSTRAINT fk_article_company FOREIGN KEY (companyId) REFERENCES company(companyId)
 );
 
@@ -1989,6 +1989,7 @@ DB 보안솔루션 기업 ‘신시웨이’는 경영 효율성 제고를 위�
 '2026-02-19 01:17:37',
 'https://www.boannews.com/media/view.asp?idx=128517&page=2&kind=3'
 );
+
 -- 1. 전체 기사 개수 확인
 SELECT count(*) FROM article;
 
@@ -2008,3 +2009,26 @@ SHOW TABLES;
 SELECT * FROM company;
 SELECT * FROM article;
 SELECT * FROM crawl_log ORDER BY crawlTime DESC;
+SELECT articleId, title, approvalStatus FROM article LIMIT 10;
+SELECT 
+    COUNT(*)
+FROM
+    incident;SELECT articleId, approvalStatus
+FROM article
+ORDER BY articleId DESC
+LIMIT 5;
+DESC article;
+SELECT *
+FROM article
+WHERE a.approvalStatus = 'pending';
+SELECT *
+FROM article a
+WHERE a.approvalStatus = 'pending';
+SELECT DATABASE();
+DESC article;
+UPDATE article
+SET approvalStatus = 'approved'
+WHERE articleId <= 50;
+SELECT approvalStatus, COUNT(*)
+FROM article
+GROUP BY approvalStatus;
