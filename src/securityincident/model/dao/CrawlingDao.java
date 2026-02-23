@@ -22,8 +22,9 @@ public class CrawlingDao {
             if (rs.next() && rs.getInt(1) > 0) return false; // 중복
         }
 
-        String sql = "INSERT INTO article (companyId, title, content, articleSource, articleDate, articleUrl) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO article " +
+                "(companyId, title, content, articleSource, articleDate, articleUrl, approvalStatus) " +
+                "VALUES (?, ?, ?, ?, ?, ?, 'pending')";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, dto.getCompanyId());
             ps.setString(2, dto.getTitle());
