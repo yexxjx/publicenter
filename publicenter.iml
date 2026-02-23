@@ -8,5 +8,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="mysql-connector-j-9.6.0" level="project" />
+    <orderEntry type="library" name="mysql-connector-j-9.6.0 (3)" level="project" />
+    <orderEntry type="library" name="selenium-http-4.40.0" level="project" />
   </component>
 </module>

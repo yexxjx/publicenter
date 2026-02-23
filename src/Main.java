@@ -1,42 +1,25 @@
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import securityincident.crawling.CrawlingScheduler;
+import securityincident.crawling.CrawlingService;
+import securityincident.view.MainView;
 
 public class Main {
-
     public static void main(String[] args) {
 
-        try {
+        CrawlingService crawlingService = new CrawlingService();
 
-            ProcessBuilder pb = new ProcessBuilder(
-                    "C:\\Users\\sku-102-06\\IdeaProjects\\publicenter\\venv\\Scripts\\python.exe",
-                    "-X",
-                    "utf8",
-                    "crawler.py"
+        // ── Thread 1: 매일 오전 10시 자동 크롤링 스케줄러 ──
+        CrawlingScheduler scheduler = new CrawlingScheduler(crawlingService);
+        scheduler.start();
 
-            );
+        // ── Thread 2: 시작 즉시 1회 백그라운드 크롤링 ──
+        Thread initCrawl = new Thread(() -> {
+            System.out.println("[Main] 초기 크롤링 실행 중 (백그라운드)...");
+            crawlingService.executeCrawling(true);
+        }, "InitCrawler");
+        initCrawl.setDaemon(true);
+        initCrawl.start();
 
-
-            // 프로젝트 루트를 작업 디렉토리로 설정
-            pb.directory(new File(System.getProperty("user.dir")));
-
-            pb.redirectErrorStream(true);
-
-            Process process = pb.start();
-
-            BufferedReader reader =
-                    new BufferedReader(
-                            new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8)
-                    );
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-
-            process.waitFor();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // ── Thread 3 (메인): 콘솔 메뉴 ──
+        MainView.getInstance().index();
     }
 }

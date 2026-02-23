@@ -13,7 +13,10 @@ public class ArticleDto {
     private String articleSource;
     private Date articleDate;
     private Timestamp createdAt;
+    private String articleUrl;
 
+    public String getArticleUrl() { return articleUrl; }
+    public void setArticleUrl(String articleUrl) { this.articleUrl = articleUrl; }
     //생성자
     public ArticleDto(int articleId, int companyId, String title, String content, String articleSource, Date articleDate, Timestamp createdAt) {
         this.articleId = articleId;
