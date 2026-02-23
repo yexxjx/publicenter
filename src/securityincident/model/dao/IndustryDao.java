@@ -5,6 +5,8 @@ import securityincident.model.dto.IndustryDto;
 import java.sql.*;
 import java.util.ArrayList;
 
+
+
 public class IndustryDao {
     private IndustryDao(){connect();}
     private static final IndustryDao instance=new IndustryDao();
