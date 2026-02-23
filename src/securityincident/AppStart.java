@@ -21,8 +21,6 @@ public class AppStart {
         scheduler.start();
 
         Thread initCrawl = new Thread(() -> {
-            System.out.println("[Crawling] 초기 크롤링 실행 중...");
-            crawlingService.executeCrawling(true);
         }, "InitCrawler");
 
         initCrawl.start();
