@@ -70,8 +70,8 @@ public class AdminView {
                             IncidentController.getInstance().findPendingIncidents();
 
                     if(list.isEmpty()){
-                        System.out.println("승인 대기 사고가 없습니다.");
-                        break;
+                        System.out.println("[안내] 승인 대기 사고가 없습니다.\n");
+                        continue;
                     }
 
                     for(IncidentDto dto : list){
