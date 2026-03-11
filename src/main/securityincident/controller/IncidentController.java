@@ -1,0 +1,146 @@
+package main.securityincident.controller;
+
+import main.securityincident.model.dao.IncidentDao;
+import main.securityincident.model.dto.IncidentDto;
+
+import java.util.ArrayList;
+
+public class IncidentController {
+    // 싱글톤
+    private IncidentController(){}
+    private static final IncidentController instance = new IncidentController();
+    public static IncidentController getInstance(){return instance;}
+    private IncidentDao id = IncidentDao.getInstance();
+
+    // 1. 보안사고관리
+    // 보안사고 등록 controller
+    public boolean incidentAddByAdmin(String companyName,String incidentYear, String incidentType, String incidentDescription,String actionTaken){
+
+        // 1. 기업 존재 확인
+        int companyId = id.getCompanyIdByName(companyName);
+
+        // 2. 기업이 존재하지 않으면 등록 불가
+        if (companyId == -1) {
+            System.out.println("❌ 존재하지 않는 기업입니다. 기업을 먼저 등록해주세요.");
+            return false;
+        }
+
+        // 3. dto 객체 생성
+        IncidentDto incidentDto = new IncidentDto();
+        incidentDto.setIncidentYear(incidentYear);
+        incidentDto.setIncidentType(incidentType);
+        incidentDto.setIncidentDescription(incidentDescription);
+        incidentDto.setActionTaken(actionTaken);
+        incidentDto.setCompanyId(companyId);
+
+        boolean result = id.incidentAddByAdmin(incidentDto);
+
+        return result;
+    } // m end
+
+    // 보안사고삭제
+    public boolean incidentDelete(int incidentId){
+        boolean result = id.incidentDelete(incidentId);
+        return result;
+    }
+
+    // * 보안사고 전체 조회
+    public ArrayList<IncidentDto> incidentFindAll(){
+        ArrayList<IncidentDto> incidentDtos = id.incidentFindAll();
+        return incidentDtos;
+    }
+
+    // * 기업별 보안 사고 조회
+    public ArrayList<IncidentDto> incidentFindByCompany(String companyName){
+        ArrayList<IncidentDto> incidentDtos = id.incidentFindByCompany(companyName);
+        return incidentDtos;
+    }
+
+    // * 사고 상세 정보 조회
+    public ArrayList<IncidentDto> incidentFindOne(int incidentId){
+        ArrayList<IncidentDto> incidentDtos = id.incidentFindOne(incidentId);
+        return incidentDtos;
+    }
+
+    // 보안사고수정
+    public boolean incidentUpdate(int incidentId, String incidentYear, String incidentDate,
+                                  String incidentType, String incidentDescription, String actionTaken){
+
+        boolean result = id.incidentUpdate(
+                incidentId,
+                incidentYear,
+                incidentDate,
+                incidentType,
+                incidentDescription,
+                actionTaken
+        );
+        return result;
+
+    }
+
+    //연도별 보안 사고 검색
+    public ArrayList<IncidentDto> incidentFindByYear(String year){
+        ArrayList<IncidentDto>db = id.incidentFindByYear(year);
+        return db;
+    } // m end
+
+
+    // 유형 목록 가져오기
+    public ArrayList<String> getIncidentTypeList(){
+        return id.getIncidentTypeList();
+    }
+
+    // 유형별 검색
+    public ArrayList<IncidentDto> incidentFindByType(String type){
+        return id.incidentFindByType(type);
+    }
+
+    // 산업군 목록
+    public ArrayList<String> getIndustryList(){
+        return id.getIndustryList();
+    }
+
+    // 산업군 검색
+    public ArrayList<IncidentDto> incidentFindByIndustry(String industryName){
+        return id.incidentFindByIndustry(industryName);
+    }
+
+    // 기업별 사고 건수
+    public ArrayList<String> statByCompany(){
+        return id.statByCompany();
+    }
+
+    // 연도별 사고 건수
+    public ArrayList<String> statByYear(){
+        return id.statByYear();
+    }
+
+    // 유형별 사고 건수
+    public ArrayList<String> statByType(){
+        return id.statByType();
+    }
+    // 사고 승인 처리
+    public boolean approveIncident(int incidentId){
+        return id.approveIncident(incidentId);
+    }
+
+    // 승인 대기 사고 목록 조회
+    public ArrayList<IncidentDto> findPendingIncidents(){
+        return id.findPendingIncidents();
+    }
+    // 자동 사고 등록 (크롤링 감지용)
+    public boolean autoInsertIncident(String incidentYear,
+                                      String incidentType,
+                                      String description,
+                                      int companyId){
+
+        return id.autoInsertIncident(
+                incidentYear,
+                incidentType,
+                description,
+                companyId
+        );
+    }
+
+
+} // class end
