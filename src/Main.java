@@ -1,6 +1,6 @@
-import securityincident.crawling.CrawlingScheduler;
-import securityincident.crawling.CrawlingService;
-import securityincident.view.MainView;
+import main.securityincident.crawling.CrawlingScheduler;
+import main.securityincident.crawling.CrawlingService;
+import main.securityincident.view.MainView;
 
 public class Main {
     public static void main(String[] args) {

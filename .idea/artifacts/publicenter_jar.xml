@@ -3,7 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/publicenter_jar</output-path>
     <root id="archive" name="publicenter.jar">
       <element id="module-output" name="publicenter" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/src/securityincident/etc/mysql-connector-j-9.6.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/main/securityincident/etc/mysql-connector-j-9.6.0.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
